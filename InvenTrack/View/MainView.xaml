@@ -1,0 +1,289 @@
+﻿<Window x:Class="InvenTrack.View.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InvenTrack.View"
+        xmlns:viewModel="clr-namespace:InvenTrack.ViewModel"
+        mc:Ignorable="d"
+        Title="MainView"
+        Height="550"
+        Width="800"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        MouseDown="Window_MouseDown"
+        WindowStartupLocation="CenterScreen"
+        Background="Transparent"
+        AllowsTransparency="True">
+
+    <Window.DataContext>
+        <viewModel:MainViewModel />
+    </Window.DataContext>
+
+    <Border CornerRadius="15"
+            Background="White"
+            BorderThickness="2">
+
+        <Border.BorderBrush>
+            <LinearGradientBrush StartPoint="0 0"
+                                 EndPoint="1 1">
+                <GradientStop Color="#2CA58D"
+                              Offset="0" />
+                <GradientStop Color="#6279B8"
+                              Offset="1" />
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="90" />
+                <RowDefinition Height="120" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <!---Header info-->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="5" />
+                </Grid.ColumnDefinitions>
+
+                <Border Background="#042A2B"
+                        Grid.ColumnSpan="4"
+                        CornerRadius="14 14 0 0" />
+
+                <TextBlock Text="WELCOME"
+                           Foreground="DarkGray"
+                           FontSize="12"
+                           FontFamily="Montserrat"
+                           Grid.Column="0"
+                           VerticalAlignment="Center"
+                           Margin="10 0 0 0" />
+
+                <Button x:Name="btnMinimize"
+                        BorderThickness="0"
+                        Content=" - "
+                        Foreground="White"
+                        FontSize="16"
+                        FontFamily="Montserrat"
+                        Cursor="Hand"
+                        Grid.Column="1"
+                        Click="btnMinimize_Click">
+
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background"
+                                    Value="#28AEED" />
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver"
+                                         Value="True">
+                                    <Setter Property="Background"
+                                            Value="#278BEF" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Width="18"
+                                    Height="18"
+                                    CornerRadius="9"
+                                    Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+
+                </Button>
+
+                <Button x:Name="btnClose"
+                        BorderThickness="0"
+                        Content=" X "
+                        Foreground="White"
+                        FontSize="16"
+                        FontFamily="Montserrat"
+                        Cursor="Hand"
+                        Grid.Column="2"
+                        Click="btnClose_Click">
+
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background"
+                                    Value="#DD5151" />
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver"
+                                         Value="True">
+                                    <Setter Property="Background"
+                                            Value="#D52121" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Width="18"
+                                    Height="18"
+                                    CornerRadius="9"
+                                    Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+
+                </Button>
+            </Grid>
+
+            <!---Logo-->
+            <Border Background="#042A2B"
+                    Grid.Row="1">
+                <Image Source="/Images/InvenTrack.png" />
+            </Border>
+
+            <!---Inventory profiles-->
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="100" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Column="1"
+                      Grid.Row="0">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="7*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <Button x:Name="InventoryA"
+                            Cursor="Hand"
+                            Margin="20">
+
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background"
+                                        Value="#2CA58D" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver"
+                                             Value="True">
+                                        <Setter Property="Background"
+                                                Value="#49D9C2" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border CornerRadius="10"
+                                        Background="{TemplateBinding Background}">
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <Border Width="100"
+                            Height="100"
+                            CornerRadius="50">
+                        <Border.Clip>
+                            <EllipseGeometry RadiusX="50"
+                                             RadiusY="50"
+                                             Center="50, 50" />
+                        </Border.Clip>
+                        <Image Source="/Images/bullets.jpg"
+                               Stretch="UniformToFill" />
+                    </Border>
+
+                    <TextBlock Text="Bullets"
+                               Grid.Row="1"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="14"
+                               FontFamily="Montserrat"/>
+                </Grid>
+
+                <Grid Grid.Column="2"
+                      Grid.Row="0">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="7*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+
+                    <Button x:Name="InventoryB"
+                            Cursor="Hand"
+                            Margin="20">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background"
+                                        Value="#2CA58D" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver"
+                                             Value="True">
+                                        <Setter Property="Background"
+                                                Value="#49D9C2" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border CornerRadius="10"
+                                        Background="{TemplateBinding Background}">
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <Border Width="100"
+                            Height="100"
+                            CornerRadius="50">
+                        <Border.Clip>
+                            <EllipseGeometry RadiusX="50"
+                                             RadiusY="50"
+                                             Center="50, 50" />
+                        </Border.Clip>
+                        <Image Source="/Images/ice cream.png"
+                               Stretch="UniformToFill" />
+                    </Border>
+
+                    <TextBlock Text="Ice Cream"
+                               Grid.Row="1"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="14"
+                               FontFamily="Montserrat" />
+                </Grid>
+
+            </Grid>
+
+
+            <TextBlock Text="{Binding CurrentUserAccount.DisplayName}"
+                       FontSize="30"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Grid.Row="2"
+                       Grid.ColumnSpan="4"
+                       FontFamily="Montserrat"
+                       FontWeight="Black" />
+
+        </Grid>
+
+    </Border>
+
+</Window>
