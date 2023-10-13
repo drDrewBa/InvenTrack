@@ -39,5 +39,19 @@ namespace InvenTrack.View
         {
             Application.Current.Shutdown();
         }
+
+        private void InventoryA_Click(object sender, RoutedEventArgs e)
+        {
+            var inventoryA = new InventoryA();
+            inventoryA.Show();
+            this.Close();
+        }
+
+        private void InventoryB_Click(object sender, RoutedEventArgs e)
+        {
+            var inventoryB = new InventoryB();
+            inventoryB.Show();
+            this.Close();
+        }
     }
 }

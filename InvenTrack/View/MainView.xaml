@@ -20,6 +20,16 @@
         <viewModel:MainViewModel />
     </Window.DataContext>
 
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
+    </Window.Resources>
+
+    <Window.Visibility>
+        <Binding Path="IsViewVisible"
+                 Mode="TwoWay"
+                 Converter="{StaticResource BooleanToVisibility}" />
+    </Window.Visibility>
+
     <Border CornerRadius="15"
             Background="White"
             BorderThickness="2">
@@ -158,7 +168,7 @@
 
                 <Grid.RowDefinitions>
                     <RowDefinition />
-                    <RowDefinition Height="100" />
+                    <RowDefinition Height="80" />
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Column="1"
@@ -171,17 +181,18 @@
                     
                     <Button x:Name="InventoryA"
                             Cursor="Hand"
-                            Margin="20">
+                            Margin="20"
+                            Click="InventoryA_Click">
 
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Setter Property="Background"
-                                        Value="#2CA58D" />
+                                        Value="#92D1C3" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver"
                                              Value="True">
                                         <Setter Property="Background"
-                                                Value="#49D9C2" />
+                                                Value="#6BBDAB" />
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -196,13 +207,13 @@
                         </Button.Template>
                     </Button>
 
-                    <Border Width="100"
-                            Height="100"
-                            CornerRadius="50">
+                    <Border Width="125"
+                            Height="125"
+                            CornerRadius="62.5">
                         <Border.Clip>
-                            <EllipseGeometry RadiusX="50"
-                                             RadiusY="50"
-                                             Center="50, 50" />
+                            <EllipseGeometry RadiusX="62.5"
+                                             RadiusY="62.5"
+                                             Center="62.5, 62.5" />
                         </Border.Clip>
                         <Image Source="/Images/bullets.jpg"
                                Stretch="UniformToFill" />
@@ -226,16 +237,18 @@
 
                     <Button x:Name="InventoryB"
                             Cursor="Hand"
-                            Margin="20">
+                            Margin="20"
+                            Click="InventoryB_Click">
+                        
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Setter Property="Background"
-                                        Value="#2CA58D" />
+                                        Value="#92D1C3" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver"
                                              Value="True">
                                         <Setter Property="Background"
-                                                Value="#49D9C2" />
+                                                Value="#6BBDAB" />
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -250,13 +263,13 @@
                         </Button.Template>
                     </Button>
 
-                    <Border Width="100"
-                            Height="100"
-                            CornerRadius="50">
+                    <Border Width="125"
+                            Height="125"
+                            CornerRadius="62.5">
                         <Border.Clip>
-                            <EllipseGeometry RadiusX="50"
-                                             RadiusY="50"
-                                             Center="50, 50" />
+                            <EllipseGeometry RadiusX="62.5"
+                                             RadiusY="62.5"
+                                             Center="62.5, 62.5" />
                         </Border.Clip>
                         <Image Source="/Images/ice cream.png"
                                Stretch="UniformToFill" />
@@ -280,7 +293,7 @@
                        Grid.Row="2"
                        Grid.ColumnSpan="4"
                        FontFamily="Montserrat"
-                       FontWeight="Black" />
+                       FontWeight="UltraBold" />
 
         </Grid>
 

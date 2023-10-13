@@ -63,10 +63,17 @@
     <Compile Include="Model\UserModel.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="ViewModel\InventoryAViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\ViewModelCommand.cs" />
+    <Compile Include="View\InventoryA.xaml.cs">
+      <DependentUpon>InventoryA.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\InventoryB.xaml.cs">
+      <DependentUpon>InventoryB.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
@@ -89,6 +96,22 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Styles\ButtonStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\UIColors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\InventoryA.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\InventoryB.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
