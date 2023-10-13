@@ -51,5 +51,17 @@ namespace InvenTrack.View
         {
             WindowState = WindowState.Minimized;
         }
+
+        private void RadioButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to sign out?", "InvenTrack", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                var loginView = new LoginView();
+                loginView.Show();
+                this.Close();
+            }
+        }
     }
 }

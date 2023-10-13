@@ -64,6 +64,10 @@
     <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="ViewModel\AInventoryViewModel.cs" />
+    <Compile Include="ViewModel\AOrdersViewModel.cs" />
+    <Compile Include="ViewModel\AReportsViewModel.cs" />
+    <Compile Include="ViewModel\ASuppliersViewModel.cs" />
+    <Compile Include="ViewModel\ASwitchViewModel.cs" />
     <Compile Include="ViewModel\InventoryAViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
@@ -71,6 +75,18 @@
     <Compile Include="ViewModel\ViewModelCommand.cs" />
     <Compile Include="View\AInventory.xaml.cs">
       <DependentUpon>AInventory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AOrders.xaml.cs">
+      <DependentUpon>AOrders.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AReports.xaml.cs">
+      <DependentUpon>AReports.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ASuppliers.xaml.cs">
+      <DependentUpon>ASuppliers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ASwitch.xaml.cs">
+      <DependentUpon>ASwitch.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\InventoryA.xaml.cs">
       <DependentUpon>InventoryA.xaml</DependentUpon>
@@ -109,6 +125,22 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\AInventory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AOrders.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AReports.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ASuppliers.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ASwitch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

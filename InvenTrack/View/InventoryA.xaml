@@ -22,6 +22,22 @@
         <DataTemplate DataType="{x:Type viewModel:AInventoryViewModel}">
             <local:AInventory />
         </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type viewModel:AOrdersViewModel}">
+            <local:AOrders />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModel:ASuppliersViewModel}">
+            <local:ASuppliers />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModel:AReportsViewModel}">
+            <local:AReports />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModel:ASwitchViewModel}">
+            <local:ASwitch />
+        </DataTemplate>
     </Window.Resources>
 
     <Border CornerRadius="10"
@@ -78,7 +94,8 @@
                     </RadioButton>
 
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color3}">
+                                 Tag="{StaticResource color3}"
+                                 Command="{Binding ShowOrdersCommand}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Orders"
                                        Style="{StaticResource menuButtonText}" />
@@ -86,7 +103,8 @@
                     </RadioButton>
 
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color3}">
+                                 Tag="{StaticResource color3}"
+                                 Command="{Binding ShowSuppliersCommand}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="My Suppliers"
                                        Style="{StaticResource menuButtonText}" />
@@ -94,7 +112,8 @@
                     </RadioButton>
 
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color3}">
+                                 Tag="{StaticResource color3}"
+                                 Command="{Binding ShowReportsCommand}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Reports"
                                        Style="{StaticResource menuButtonText}" />
@@ -102,7 +121,8 @@
                     </RadioButton>
 
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color3}">
+                                 Tag="{StaticResource color3}"
+                                 Command="{Binding ShowSwitchCommand}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Switch Inventory"
                                        Style="{StaticResource menuButtonText}" />
@@ -110,7 +130,8 @@
                     </RadioButton>
 
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color3}">
+                                 Tag="{StaticResource color3}"
+                                 Click="RadioButton_Click">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Sign Out"
                                        Style="{StaticResource menuButtonText}" />
