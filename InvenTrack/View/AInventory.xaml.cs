@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace InvenTrack.View
 {
@@ -23,6 +25,20 @@ namespace InvenTrack.View
         public AInventory()
         {
             InitializeComponent();
+            LoadGrid();
+        }
+
+        SqlConnection conn = new SqlConnection(@"Data Source=DESKTOP-QP317C6;Initial Catalog=JaensGadgetGarage;Integrated Security=True");
+
+        public void LoadGrid()
+        {
+            SqlCommand cmd = new SqlCommand("SELECT * FROM Inventory", conn);
+            DataTable dt = new DataTable();
+            conn.Open();
+            SqlDataReader sdr = cmd.ExecuteReader();
+            dt.Load(sdr);
+            conn.Close();
+            AInventoryDataGrid.ItemsSource = dt.DefaultView;
         }
     }
 }

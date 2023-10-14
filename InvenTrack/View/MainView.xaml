@@ -219,11 +219,11 @@
                                              RadiusY="62.5"
                                              Center="62.5, 62.5" />
                         </Border.Clip>
-                        <Image Source="/Images/bullets.jpg"
+                        <Image Source="/Images/Jaen's Gadget Garage.jpg"
                                Stretch="UniformToFill" />
                     </Border>
 
-                    <TextBlock Text="Bullets"
+                    <TextBlock Text="Jaen's Gadget Garage"
                                Grid.Row="1"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
@@ -278,11 +278,11 @@
                                              RadiusY="62.5"
                                              Center="62.5, 62.5" />
                         </Border.Clip>
-                        <Image Source="/Images/ice cream.png"
+                        <Image Source="/Images/Nathan's Nutrient Nexus.jpg"
                                Stretch="UniformToFill" />
                     </Border>
 
-                    <TextBlock Text="Ice Cream"
+                    <TextBlock Text="Nathan's Nutrient Nexus"
                                Grid.Row="1"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"

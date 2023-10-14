@@ -265,7 +265,7 @@
                             <Rectangle Fill="White"
                                        Width="1.5"
                                        Height="25" />
-                            <TextBlock Text="Inventory B"
+                            <TextBlock Text="Nathan's Nutrient Nexus "
                                        VerticalAlignment="Center"
                                        Foreground="White"
                                        FontFamily="Montserrat"

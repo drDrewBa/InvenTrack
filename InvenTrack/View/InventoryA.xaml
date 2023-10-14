@@ -13,7 +13,7 @@
         WindowStyle="None"
         Background="Transparent"
         AllowsTransparency="True">
-  
+
     <Window.DataContext>
         <viewModel:InventoryAViewModel />
     </Window.DataContext>
@@ -22,7 +22,7 @@
         <DataTemplate DataType="{x:Type viewModel:AInventoryViewModel}">
             <local:AInventory />
         </DataTemplate>
-        
+
         <DataTemplate DataType="{x:Type viewModel:AOrdersViewModel}">
             <local:AOrders />
         </DataTemplate>
@@ -54,6 +54,10 @@
         </Border.BorderBrush>
 
         <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="231*" />
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="250" />
                 <ColumnDefinition Width="*" />
@@ -61,7 +65,8 @@
 
             <!--Navigation-->
             <Border CornerRadius="10 0 0 10"
-                    Grid.Column="0">
+                    Grid.Column="0"
+                    Grid.RowSpan="2">
 
                 <Border.Background>
                     <LinearGradientBrush StartPoint="1 0"
@@ -142,7 +147,8 @@
 
             <!--Main content-->
             <Border CornerRadius="0 10 10 0"
-                    Grid.Column="2">
+                    Grid.Column="1"
+                    Grid.RowSpan="2">
 
                 <Border.Background>
                     <LinearGradientBrush StartPoint="1 0"
@@ -217,7 +223,6 @@
                                     </Border>
                                 </ControlTemplate>
                             </Button.Template>
-
                         </Button>
 
                         <Button x:Name="btnClose"
@@ -256,7 +261,6 @@
                                     </Border>
                                 </ControlTemplate>
                             </Button.Template>
-
                         </Button>
                     </Grid>
 
@@ -266,7 +270,7 @@
                             <Rectangle Fill="White"
                                        Width="1.5"
                                        Height="25" />
-                            <TextBlock Text="Inventory A"
+                            <TextBlock Text="Jaen's Gadget Garage "
                                        VerticalAlignment="Center"
                                        Foreground="White"
                                        FontFamily="Montserrat"
@@ -276,11 +280,17 @@
                         </StackPanel>
                     </Grid>
 
-                    <!--Contect section and child views-->
-                    <ContentControl Content="{Binding CurrentChildView}"
-                                    Grid.Row="2"
-                                    Margin="25" />
+                    <Grid Grid.Row="2">
 
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="300"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <!--Contect section and child views-->
+                        <ContentControl Content="{Binding CurrentChildView}"
+                                        Margin="25" />
+                    </Grid>
                 </Grid>
             </Border>
         </Grid>

@@ -24,5 +24,16 @@ namespace InvenTrack.View
         {
             InitializeComponent();
         }
+
+        private void InventoryA_Click(object sender, RoutedEventArgs e)
+        {
+            var inventoryA = new InventoryA();
+            inventoryA.Show();
+            Window parentWindow = Window.GetWindow(this);
+            if (parentWindow != null)
+            {
+                parentWindow.Close();
+            }
+        }
     }
 }

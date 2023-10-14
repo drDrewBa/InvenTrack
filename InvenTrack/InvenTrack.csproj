@@ -237,5 +237,9 @@
   <ItemGroup>
     <Resource Include="Images\ice cream.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Jaen%27s Gadget Garage.jpg" />
+    <Resource Include="Images\Nathan%27s Nutrient Nexus.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

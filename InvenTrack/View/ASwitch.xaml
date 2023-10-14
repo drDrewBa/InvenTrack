@@ -6,7 +6,77 @@
              xmlns:local="clr-namespace:InvenTrack.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="LightSlateGray">
-            
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Column="0"
+              Grid.Row="0">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="7*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+
+            <Button x:Name="InventoryB"
+                    Cursor="Hand"
+                    Height="160"
+                    Width="160"
+                    Click="InventoryB_Click">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background"
+                                Value="White" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter Property="Background"
+                                        Value="#D4EAE5" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="10"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="#042A2B"
+                                BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <Border Width="125"
+                    Height="125"
+                    CornerRadius="62.5">
+                <Border.Clip>
+                    <EllipseGeometry RadiusX="62.5"
+                                     RadiusY="62.5"
+                                     Center="62.5, 62.5" />
+                </Border.Clip>
+                <Image Source="/Images/Nathan's Nutrient Nexus.jpg"
+                       Stretch="UniformToFill" />
+            </Border>
+
+            <TextBlock Text="Nathan's Nutrient Nexus"
+                       Grid.Row="1"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="14"
+                       FontFamily="Montserrat" 
+                       Margin="0 0 0 20"/>
+        </Grid>
     </Grid>
 </UserControl>
