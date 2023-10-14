@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace InvenTrack.ViewModel
 {
-    internal class AOrdersViewModel : ViewModelBase
+    public class AOrdersViewModel : ViewModelBase
     {
     }
 }

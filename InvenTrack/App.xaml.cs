@@ -20,6 +20,9 @@ namespace InvenTrack
             //var inventoryA = new InventoryA();
             //inventoryA.Show();
 
+            //var inventoryB = new InventoryB();
+            //inventoryB.Show();
+
             var loginView = new LoginView();
             loginView.Show();
             loginView.IsVisibleChanged += (s, ev) =>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace InvenTrack.ViewModel
 {
-    public class AReportsViewModel : ViewModelBase
+    public class BInventoryViewModel : ViewModelBase
     {
     }
 }

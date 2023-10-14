@@ -68,7 +68,13 @@
     <Compile Include="ViewModel\AReportsViewModel.cs" />
     <Compile Include="ViewModel\ASuppliersViewModel.cs" />
     <Compile Include="ViewModel\ASwitchViewModel.cs" />
+    <Compile Include="ViewModel\BInventoryViewModel.cs" />
+    <Compile Include="ViewModel\BOrdersViewModel.cs" />
+    <Compile Include="ViewModel\BReportsViewModel.cs" />
+    <Compile Include="ViewModel\BSuppliersViewModel.cs" />
+    <Compile Include="ViewModel\BSwitchViewModel.cs" />
     <Compile Include="ViewModel\InventoryAViewModel.cs" />
+    <Compile Include="ViewModel\InventoryBViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
@@ -87,6 +93,21 @@
     </Compile>
     <Compile Include="View\ASwitch.xaml.cs">
       <DependentUpon>ASwitch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\BInventory.xaml.cs">
+      <DependentUpon>BInventory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\BOrders.xaml.cs">
+      <DependentUpon>BOrders.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\BReports.xaml.cs">
+      <DependentUpon>BReports.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\BSuppliers.xaml.cs">
+      <DependentUpon>BSuppliers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\BSwitch.xaml.cs">
+      <DependentUpon>BSwitch.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\InventoryA.xaml.cs">
       <DependentUpon>InventoryA.xaml</DependentUpon>
@@ -141,6 +162,26 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ASwitch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\BInventory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\BOrders.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\BReports.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\BSuppliers.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\BSwitch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

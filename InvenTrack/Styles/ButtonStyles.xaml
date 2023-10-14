@@ -59,7 +59,7 @@
 
     </Style>
     
-    <!--Disregarded: Menu buttons-->
+    <!--Disregarded: Menu icons-->
     <!--Menu button text-->
     <Style x:Key="menuButtonText"
            TargetType="TextBlock">

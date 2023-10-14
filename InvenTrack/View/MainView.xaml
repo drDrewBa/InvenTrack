@@ -175,10 +175,10 @@
                       Grid.Row="0">
 
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="7*"/>
-                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="7*" />
+                        <RowDefinition Height="1*" />
                     </Grid.RowDefinitions>
-                    
+
                     <Button x:Name="InventoryA"
                             Cursor="Hand"
                             Margin="20"
@@ -187,12 +187,12 @@
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Setter Property="Background"
-                                        Value="#92D1C3" />
+                                        Value="White" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver"
                                              Value="True">
                                         <Setter Property="Background"
-                                                Value="#6BBDAB" />
+                                                Value="#D4EAE5" />
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -201,7 +201,11 @@
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border CornerRadius="10"
+                                        BorderThickness="1"
+                                        BorderBrush="#042A2B"
                                         Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
                                 </Border>
                             </ControlTemplate>
                         </Button.Template>
@@ -224,7 +228,7 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                FontSize="14"
-                               FontFamily="Montserrat"/>
+                               FontFamily="Montserrat" />
                 </Grid>
 
                 <Grid Grid.Column="2"
@@ -239,16 +243,15 @@
                             Cursor="Hand"
                             Margin="20"
                             Click="InventoryB_Click">
-                        
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Setter Property="Background"
-                                        Value="#92D1C3" />
+                                        Value="White" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver"
                                              Value="True">
                                         <Setter Property="Background"
-                                                Value="#6BBDAB" />
+                                                Value="#D4EAE5" />
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -257,7 +260,11 @@
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border CornerRadius="10"
-                                        Background="{TemplateBinding Background}">
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="#042A2B"
+                                        BorderThickness="1">
+                                    <ContentPresenter HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
                                 </Border>
                             </ControlTemplate>
                         </Button.Template>

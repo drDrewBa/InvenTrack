@@ -4,9 +4,285 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InvenTrack.View"
+        xmlns:viewModel="clr-namespace:InvenTrack.ViewModel"
         mc:Ignorable="d"
-        Title="InventoryB" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="InventoryB"
+        Height="700"
+        Width="1300"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        Background="Transparent"
+        AllowsTransparency="True">
+
+    <Window.DataContext>
+        <viewModel:InventoryBViewModel />
+    </Window.DataContext>
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewModel:BInventoryViewModel}">
+            <local:BInventory />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModel:BOrdersViewModel}">
+            <local:BOrders />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModel:BSuppliersViewModel}">
+            <local:BSuppliers />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModel:BReportsViewModel}">
+            <local:BReports />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModel:BSwitchViewModel}">
+            <local:BSwitch />
+        </DataTemplate>
+    </Window.Resources>
+
+    <Border CornerRadius="10"
+            BorderThickness="2">
+
+        <Border.BorderBrush>
+            <LinearGradientBrush StartPoint="0 0"
+                                 EndPoint="1 1">
+                <GradientStop Color="#2CA58D"
+                              Offset="0" />
+                <GradientStop Color="#6279B8"
+                              Offset="1" />
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!--Navigation-->
+            <Border CornerRadius="10 0 0 10"
+                    Grid.Column="0">
+
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="1 0"
+                                         EndPoint="0 1">
+                        <GradientStop Color="{StaticResource backgroundColorGreen1}"
+                                      Offset="0" />
+                        <GradientStop Color="{StaticResource backgroundColorGreen2}"
+                                      Offset="1" />
+                    </LinearGradientBrush>
+                </Border.Background>
+
+                <StackPanel>
+
+                    <!--Logo-->
+                    <StackPanel Height="50"
+                                Margin="15 25 0 40">
+                        <Image Source="/Images/InvenTrack.png"
+                               Height="50" />
+                    </StackPanel>
+
+                    <!--Menu buttons-->
+                    <RadioButton Style="{StaticResource menuButton}"
+                                 Tag="{StaticResource color3}"
+                                 IsChecked="True"
+                                 Command="{Binding ShowInventoryCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="My Inventory"
+                                       Style="{StaticResource menuButtonText}" />
+                        </StackPanel>
+                    </RadioButton>
+
+                    <RadioButton Style="{StaticResource menuButton}"
+                                 Tag="{StaticResource color3}"
+                                 Command="{Binding ShowOrdersCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Orders"
+                                       Style="{StaticResource menuButtonText}" />
+                        </StackPanel>
+                    </RadioButton>
+
+                    <RadioButton Style="{StaticResource menuButton}"
+                                 Tag="{StaticResource color3}"
+                                 Command="{Binding ShowSuppliersCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Contacts and Suppliers"
+                                       Style="{StaticResource menuButtonText}" />
+                        </StackPanel>
+                    </RadioButton>
+
+                    <RadioButton Style="{StaticResource menuButton}"
+                                 Tag="{StaticResource color3}"
+                                 Command="{Binding ShowReportsCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Reports"
+                                       Style="{StaticResource menuButtonText}" />
+                        </StackPanel>
+                    </RadioButton>
+
+                    <RadioButton Style="{StaticResource menuButton}"
+                                 Tag="{StaticResource color3}"
+                                 Command="{Binding ShowSwitchCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Switch Inventory"
+                                       Style="{StaticResource menuButtonText}" />
+                        </StackPanel>
+                    </RadioButton>
+
+                    <RadioButton Style="{StaticResource menuButton}"
+                                 Tag="{StaticResource color3}"
+                                 Click="RadioButton_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Sign Out"
+                                       Style="{StaticResource menuButtonText}" />
+                        </StackPanel>
+                    </RadioButton>
+                </StackPanel>
+            </Border>
+
+            <!--Main content-->
+            <Border CornerRadius="0 10 10 0"
+                    Grid.Column="2">
+
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="1 0"
+                                         EndPoint="0 1">
+                        <GradientStop Color="{StaticResource backgroundColorWhite}"
+                                      Offset="0" />
+                        <GradientStop Color="{StaticResource color3}"
+                                      Offset="1" />
+                    </LinearGradientBrush>
+                </Border.Background>
+
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <!--Control bar-->
+                        <RowDefinition Height="25" />
+
+                        <!--Header-->
+                        <RowDefinition Height="50" />
+
+                        <!--Content-->
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Border Background="#042A2B"
+                            CornerRadius="0 9 0 0"
+                            Grid.RowSpan="2" />
+
+                    <!--Control bar-->
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="25" />
+                            <ColumnDefinition Width="25" />
+                            <ColumnDefinition Width="5" />
+                        </Grid.ColumnDefinitions>
+
+                        <Button x:Name="btnMinimize"
+                                BorderThickness="0"
+                                Content=" - "
+                                Foreground="White"
+                                FontSize="16"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                Grid.Column="1"
+                                Click="btnMinimize_Click"
+                                Panel.ZIndex="1">
+
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background"
+                                            Value="#28AEED" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver"
+                                                 Value="True">
+                                            <Setter Property="Background"
+                                                    Value="#278BEF" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Width="18"
+                                            Height="18"
+                                            CornerRadius="9"
+                                            Background="{TemplateBinding Background}">
+                                        <ContentPresenter VerticalAlignment="Center"
+                                                          HorizontalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+
+                        </Button>
+
+                        <Button x:Name="btnClose"
+                                BorderThickness="0"
+                                Content=" X "
+                                Foreground="White"
+                                FontSize="16"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                Grid.Column="2"
+                                Click="btnClose_Click"
+                                Panel.ZIndex="1">
+
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background"
+                                            Value="#DD5151" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver"
+                                                 Value="True">
+                                            <Setter Property="Background"
+                                                    Value="#D52121" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Width="18"
+                                            Height="18"
+                                            CornerRadius="9"
+                                            Background="{TemplateBinding Background}">
+                                        <ContentPresenter VerticalAlignment="Center"
+                                                          HorizontalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </Grid>
+
+                    <!--Header-->
+                    <Grid Grid.Row="1">
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="White"
+                                       Width="1.5"
+                                       Height="25" />
+                            <TextBlock Text="Inventory B"
+                                       VerticalAlignment="Center"
+                                       Foreground="White"
+                                       FontFamily="Montserrat"
+                                       FontWeight="Medium"
+                                       FontSize="20"
+                                       Margin="15 0 0 0" />
+                        </StackPanel>
+                    </Grid>
+
+                    <!--Contect section and child views-->
+                    <ContentControl Content="{Binding CurrentChildView}"
+                                    Grid.Row="2"
+                                    Margin="25" />
+
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+
 </Window>

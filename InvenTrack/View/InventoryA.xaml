@@ -13,7 +13,7 @@
         WindowStyle="None"
         Background="Transparent"
         AllowsTransparency="True">
-
+  
     <Window.DataContext>
         <viewModel:InventoryAViewModel />
     </Window.DataContext>
@@ -106,7 +106,7 @@
                                  Tag="{StaticResource color3}"
                                  Command="{Binding ShowSuppliersCommand}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="My Suppliers"
+                            <TextBlock Text="Contacts and Suppliers"
                                        Style="{StaticResource menuButtonText}" />
                         </StackPanel>
                     </RadioButton>
@@ -137,9 +137,7 @@
                                        Style="{StaticResource menuButtonText}" />
                         </StackPanel>
                     </RadioButton>
-
                 </StackPanel>
-
             </Border>
 
             <!--Main content-->
@@ -265,9 +263,9 @@
                     <!--Header-->
                     <Grid Grid.Row="1">
                         <StackPanel Orientation="Horizontal">
-                            <Rectangle Fill="White" 
+                            <Rectangle Fill="White"
                                        Width="1.5"
-                                       Height="25"/>
+                                       Height="25" />
                             <TextBlock Text="Inventory A"
                                        VerticalAlignment="Center"
                                        Foreground="White"
@@ -277,16 +275,14 @@
                                        Margin="15 0 0 0" />
                         </StackPanel>
                     </Grid>
-                    
+
                     <!--Contect section and child views-->
                     <ContentControl Content="{Binding CurrentChildView}"
                                     Grid.Row="2"
                                     Margin="25" />
 
                 </Grid>
-
             </Border>
-
         </Grid>
     </Border>
 </Window>
