@@ -23,9 +23,10 @@ namespace InvenTrack.View
     public partial class AInventory : UserControl
     {
 
-        SqlConnection conn = new SqlConnection(@"Data Source=DESKTOP-QP317C6;Initial Catalog=JaensGadgetGarage;Integrated Security=True");
-        SqlCommand cmd;
+        private SqlConnection conn = new SqlConnection(@"Data Source=DESKTOP-QP317C6;Initial Catalog=JaensGadgetGarage;Integrated Security=True");
+        private SqlCommand cmd;
         private int selectedID;
+        private string selectedProduct, selectedCategory, selectedBrand, selectedStock, selectedPrice;
 
         public AInventory()
         {
@@ -63,8 +64,24 @@ namespace InvenTrack.View
             {
                 if (AInventoryDataGrid.SelectedItem != null)
                 {
+
                     DataRowView selectedRow = (DataRowView)AInventoryDataGrid.SelectedItem;
                     selectedID = (int)selectedRow["ID"];
+
+                    selectedProduct = (AInventoryDataGrid.SelectedItem as DataRowView)["Product"].ToString();
+                    productTextBox.Text = selectedProduct;
+
+                    selectedCategory = (AInventoryDataGrid.SelectedItem as DataRowView)["Category"].ToString();
+                    categoryTextBox.Text = selectedCategory;
+
+                    selectedBrand = (AInventoryDataGrid.SelectedItem as DataRowView)["Brand"].ToString();
+                    brandTextBox.Text = selectedBrand;
+
+                    selectedStock = (AInventoryDataGrid.SelectedItem as DataRowView)["Stock"].ToString();
+                    stockTextBox.Text = selectedStock;
+
+                    selectedPrice = (AInventoryDataGrid.SelectedItem as DataRowView)["Price"].ToString();
+                    priceTextBox.Text = selectedPrice;
                 }
             }
             catch

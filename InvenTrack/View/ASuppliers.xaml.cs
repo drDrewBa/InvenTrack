@@ -23,8 +23,9 @@ namespace InvenTrack.View
     public partial class ASuppliers : UserControl
     {
 
-        SqlConnection conn = new SqlConnection(@"Data Source=DESKTOP-QP317C6;Initial Catalog=JaensGadgetGarage;Integrated Security=True");
-        SqlCommand cmd;
+        private SqlConnection conn = new SqlConnection(@"Data Source=DESKTOP-QP317C6;Initial Catalog=JaensGadgetGarage;Integrated Security=True");
+        private SqlCommand cmd;
+        private string selectedPhone, selectedName, selectedCompany;
 
         public ASuppliers()
         {
@@ -56,7 +57,7 @@ namespace InvenTrack.View
             return count > 0;
         }
 
-        // Updating tables and operations
+        // Updating tables, commands, views
         private void ClearData()
         {
             nameTextBox.Clear();
@@ -102,9 +103,53 @@ namespace InvenTrack.View
             }
         }
 
+        //Commands
         private void ASuppliersDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            try
+            {
+                if (ASuppliersDataGrid.SelectedItem != null)
+                {
+                    DataRowView selectedRow = ASuppliersDataGrid.SelectedItem as DataRowView;
 
+                    if (selectedRow != null)
+                    {
+                        // Updating text fields
+                        selectedPhone = selectedRow["Phone"]?.ToString();
+                        phoneTextBox.Text = selectedPhone;
+
+                        selectedName = selectedRow["Name"]?.ToString();
+                        nameTextBox.Text = selectedName;
+
+                        selectedCompany = selectedRow["Company"]?.ToString();
+                        companyTextBox.Text = selectedCompany;
+
+                        // Updating contact card
+                        using (SqlConnection conn = new SqlConnection(@"Data Source=DESKTOP-QP317C6;Initial Catalog=JaensGadgetGarage;Integrated Security=True"))
+                        {
+                            conn.Open();
+                            using (cmd = new SqlCommand($"SELECT * FROM Contacts WHERE Phone = '{selectedPhone}'", conn))
+                            {
+                                using (SqlDataReader reader = cmd.ExecuteReader())
+                                {
+                                    if (reader.Read())
+                                    {
+                                        nameText.Text = reader["Name"].ToString();
+                                        companyText.Text = reader["Company"].ToString();
+                                        phoneText.Text = "Phone: " + reader["Phone"].ToString();
+                                        emailText.Text = "Email: " + reader["Email"].ToString();
+                                        addressText.Text = "Address: " + reader["Address"].ToString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void addBtn_Click(object sender, RoutedEventArgs e)
@@ -144,18 +189,16 @@ namespace InvenTrack.View
 
         private void updateBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (ASuppliersDataGrid.SelectedItem != null)
+            if (!string.IsNullOrWhiteSpace(phoneTextBox.Text))
             {
                 try
                 {
                     if (IsValid())
                     {
                         conn.Open();
-                        DataRowView selectedRow = (DataRowView)ASuppliersDataGrid.SelectedItem;
-                        string selectedID = (string) selectedRow["Phone"];
-                        cmd = new SqlCommand($"UPDATE Contact SET Name = '{nameTextBox.Text}', " +
+                        cmd = new SqlCommand($"UPDATE Contacts SET Name = '{nameTextBox.Text}', " +
                             $"Company = '{companyTextBox.Text}', Email = '{emailTextBox.Text}', " +
-                            $"Address = '{addressTextBox.Text}', Image = '{imageTextBox.Text}' WHERE ID = '{selectedID}'", conn);
+                            $"Address = '{addressTextBox.Text}', Image = '{imageTextBox.Text}' WHERE Phone = '{phoneTextBox.Text}'", conn);
                         cmd.ExecuteNonQuery();
                         conn.Close();
                         ClearData();
@@ -169,7 +212,7 @@ namespace InvenTrack.View
             }
             else
             {
-                MessageBox.Show("Please select a row to update.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Please select a contact to update.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 

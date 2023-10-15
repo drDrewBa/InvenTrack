@@ -39,6 +39,7 @@
                 <TextBox x:Name="searchTextBox"
                          Style="{StaticResource CustomTextBoxStyle}"
                          Grid.Column="1"
+                         Margin="5 0 10 0"
                          TextChanged="searchTextBox_TextChanged" />
             </Grid>
 
@@ -46,6 +47,7 @@
             <DataGrid x:Name="ASuppliersDataGrid"
                       Style="{StaticResource CustomDataGridStyle}"
                       Grid.Row="1"
+                      Margin="5 0 10 0"
                       SelectionChanged="ASuppliersDataGrid_SelectionChanged"></DataGrid>
         </Grid>
 
@@ -97,6 +99,7 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="Name"
+                                   x:Name="nameText"
                                    Grid.Row="1"
                                    FontFamily="Montserrat"
                                    FontSize="20"
@@ -104,13 +107,15 @@
                                    Foreground="White"/>
                         
                         <TextBlock Text="Company"
+                                   x:Name="companyText"
                                    Grid.Row="2"
                                    FontFamily="Montserrat"
                                    FontSize="16"
                                    FontWeight="Medium"
                                    Foreground="White" />
 
-                        <TextBlock Text="Number"
+                        <TextBlock Text="Phone: "
+                                   x:Name="phoneText"
                                    Grid.Row="4"
                                    FontFamily="Montserrat"
                                    FontSize="12"
@@ -118,7 +123,8 @@
                                    Foreground="White"
                                    Margin="10 0 0 0"/>
 
-                        <TextBlock Text="Email"
+                        <TextBlock Text="Email: "
+                                   x:Name="emailText"
                                    Grid.Row="5"
                                    FontFamily="Montserrat"
                                    FontSize="12"
@@ -126,7 +132,8 @@
                                    Foreground="White"
                                    Margin="10 0 0 0"/>
 
-                        <TextBlock Text="Address"
+                        <TextBlock Text="Address: "
+                                   x:Name="addressText"
                                    Grid.Row="6"
                                    FontFamily="Montserrat"
                                    FontSize="12"
