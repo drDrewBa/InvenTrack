@@ -165,23 +165,20 @@ namespace InvenTrack.View
             {
                 if (MessageBox.Show("Are you sure you want to delete the selected item?", "InvenTrack", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
-                    conn.Open();
                     try
                     {
+                        conn.Open();
                         DataRowView selectedRow = (DataRowView)AInventoryDataGrid.SelectedItem;
                         int selectedID = (int)selectedRow["ID"];
-                        cmd = new SqlCommand($"DELETE FROM Inventory WHERE ID = {selectedID}", conn);
+                        cmd = new SqlCommand($"DELETE FROM Inventory WHERE ID = '{selectedID}'", conn);
                         cmd.ExecuteNonQuery();
                         conn.Close();
+                        ClearData();
+                        LoadGrid();
                     }
                     catch (SqlException ex)
                     {
                         MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                    finally
-                    {
-                        ClearData();
-                        LoadGrid();
                     }
                 }
             }

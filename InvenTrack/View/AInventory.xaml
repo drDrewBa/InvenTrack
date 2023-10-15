@@ -73,9 +73,19 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Border Background="#92D1C3"
-                        CornerRadius="5 5 0 0"
+                <Border CornerRadius="5 5 0 0"
                         Margin="5 5 5 0">
+
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0"
+                                             EndPoint="1,0">
+                            <GradientStop Color="{StaticResource color2}"
+                                          Offset="0" />
+                            <GradientStop Color="{StaticResource color5}"
+                                          Offset="1" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+
                     <TextBlock FontFamily="Montserrat"
                                FontWeight="Medium"
                                FontSize="17"
@@ -100,9 +110,18 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Border Background="#92D1C3"
-                        CornerRadius="5 5 0 0"
+                <Border CornerRadius="5 5 0 0"
                         Margin="5 5 5 0">
+
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0"
+                                             EndPoint="1,0">
+                            <GradientStop Color="{StaticResource color2}"
+                                          Offset="0" />
+                            <GradientStop Color="{StaticResource color5}"
+                                          Offset="1" />
+                        </LinearGradientBrush>
+                    </Border.Background>
 
                     <TextBlock FontFamily="Montserrat"
                                FontWeight="Medium"
@@ -153,8 +172,7 @@
                              Text=""
                              Margin="20 0 20 0"
                              Height="17"
-                             FontWeight="Regular"
-                             TextChanged="searchTextBox_TextChanged" />
+                             FontWeight="Regular" />
 
                     <!--Category-->
                     <TextBlock FontFamily="Montserrat"
@@ -173,8 +191,7 @@
                              Text=""
                              Margin="20 0 20 0"
                              Height="17"
-                             FontWeight="Regular"
-                             TextChanged="searchTextBox_TextChanged" />
+                             FontWeight="Regular" />
 
                     <!--Brand-->
                     <TextBlock FontFamily="Montserrat"
@@ -193,8 +210,7 @@
                              Text=""
                              Margin="20 0 20 0"
                              Height="17"
-                             FontWeight="Regular"
-                             TextChanged="searchTextBox_TextChanged" />
+                             FontWeight="Regular"/>
 
                     <!--Stock & Price-->
                     <Grid Grid.Row="6">

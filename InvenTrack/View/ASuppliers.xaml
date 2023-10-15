@@ -6,7 +6,358 @@
              xmlns:local="clr-namespace:InvenTrack.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="LightGreen">
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="6*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="9*"/>
+            </Grid.RowDefinitions>
+
+            <!--Search bar-->
+            <Grid Grid.Row="0">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="8*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock FontFamily="Montserrat"
+                           FontWeight="Medium"
+                           FontSize="17"
+                           Foreground="Black"
+                           Padding="0 0 0 5"
+                           Margin="0 0 0 10"
+                           VerticalAlignment="Bottom"
+                           Text="Search" />
+
+                <TextBox x:Name="searchTextBox"
+                         Style="{StaticResource CustomTextBoxStyle}"
+                         Grid.Column="1"
+                         TextChanged="searchTextBox_TextChanged" />
+            </Grid>
+
+            <!--Inventory table-->
+            <DataGrid x:Name="ASuppliersDataGrid"
+                      Style="{StaticResource CustomDataGridStyle}"
+                      Grid.Row="1"
+                      SelectionChanged="ASuppliersDataGrid_SelectionChanged"></DataGrid>
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <!--Contact view-->
+            <Border CornerRadius="10" Margin="20">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,1"
+                                         EndPoint="1,0">
+                        <GradientStop Color="{StaticResource color5}"
+                                      Offset="0" />
+                        <GradientStop Color="{StaticResource color4}"
+                                      Offset="1" />
+                    </LinearGradientBrush>
+                </Border.Background>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="6*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Ellipse Width="160"
+                             Height="160"
+                             Grid.Column="0"
+                             Stroke="White" 
+                             StrokeThickness="3">
+                        <!-- Set the stroke thickness -->
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="/Images/bullets.jpg" />
+                        </Ellipse.Fill>
+                    </Ellipse>
+
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Name"
+                                   Grid.Row="1"
+                                   FontFamily="Montserrat"
+                                   FontSize="20"
+                                   FontWeight="Bold"
+                                   Foreground="White"/>
+                        
+                        <TextBlock Text="Company"
+                                   Grid.Row="2"
+                                   FontFamily="Montserrat"
+                                   FontSize="16"
+                                   FontWeight="Medium"
+                                   Foreground="White" />
+
+                        <TextBlock Text="Number"
+                                   Grid.Row="4"
+                                   FontFamily="Montserrat"
+                                   FontSize="12"
+                                   FontWeight="Medium"
+                                   Foreground="White"
+                                   Margin="10 0 0 0"/>
+
+                        <TextBlock Text="Email"
+                                   Grid.Row="5"
+                                   FontFamily="Montserrat"
+                                   FontSize="12"
+                                   FontWeight="Medium"
+                                   Foreground="White"
+                                   Margin="10 0 0 0"/>
+
+                        <TextBlock Text="Address"
+                                   Grid.Row="6"
+                                   FontFamily="Montserrat"
+                                   FontSize="12"
+                                   FontWeight="Medium"
+                                   Foreground="White"
+                                   Margin="10 0 0 0"/>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Row="1" Margin="20 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border CornerRadius="5 5 0 0"
+                        Margin="5 5 5 0">
+
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0"
+                                             EndPoint="1,0">
+                            <GradientStop Color="{StaticResource color2}"
+                                          Offset="0" />
+                            <GradientStop Color="{StaticResource color5}"
+                                          Offset="1" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+
+                    <TextBlock FontFamily="Montserrat"
+                               FontWeight="Medium"
+                               FontSize="17"
+                               Foreground="Black"
+                               Padding="10 0 0 0"
+                               VerticalAlignment="Center"
+                               Text="Manage Contacts" />
+
+                </Border>
+
+                <Border Background="White"
+                        Grid.Row="1"
+                        CornerRadius="0 0 5 5"
+                        Margin="5 0 5 5">
+
+                    <!--Managing Contacts-->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="7*"/>
+                            <ColumnDefinition Width="3*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!--Fields-->
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock FontFamily="Montserrat"
+                                       FontWeight="Regular"
+                                       FontSize="12"
+                                       Margin="10 0 0 0"
+                                       Foreground="Black"
+                                       VerticalAlignment="Center"
+                                       Text="Name"
+                                       Grid.Row="0" />
+
+                            <TextBlock FontFamily="Montserrat"
+                                       FontWeight="Regular"
+                                       FontSize="12"
+                                       Margin="10 0 0 0"
+                                       Foreground="Black"
+                                       VerticalAlignment="Center"
+                                       Text="Company"
+                                       Grid.Row="1" />
+
+                            <TextBlock FontFamily="Montserrat"
+                                       FontWeight="Regular"
+                                       FontSize="12"
+                                       Margin="10 0 0 0"
+                                       Foreground="Black"
+                                       VerticalAlignment="Center"
+                                       Text="Phone"
+                                       Grid.Row="2" />
+
+                            <TextBlock FontFamily="Montserrat"
+                                       FontWeight="Regular"
+                                       FontSize="12"
+                                       Margin="10 0 0 0"
+                                       Foreground="Black"
+                                       VerticalAlignment="Center"
+                                       Text="Email"
+                                       Grid.Row="3" />
+
+                            <TextBlock FontFamily="Montserrat"
+                                       FontWeight="Regular"
+                                       FontSize="12"
+                                       Margin="10 0 0 0"
+                                       Foreground="Black"
+                                       VerticalAlignment="Center"
+                                       Text="Address"
+                                       Grid.Row="4" />
+                            
+                            <TextBlock FontFamily="Montserrat"
+                                       FontWeight="Regular"
+                                       FontSize="12"
+                                       Margin="10 0 0 0"
+                                       Foreground="Black"
+                                       VerticalAlignment="Center"
+                                       Text="Image"
+                                       Grid.Row="5" />
+
+                            <TextBox x:Name="nameTextBox"
+                                     Style="{StaticResource CustomTextBoxStyle}"
+                                     Grid.Column="1"
+                                     Grid.Row="0"
+                                     FontSize="12"
+                                     Margin="0 0 10 0"
+                                     Text=""
+                                     Height="17"
+                                     FontWeight="Regular"
+                                     TextChanged="searchTextBox_TextChanged" />
+
+                            <TextBox x:Name="companyTextBox"
+                                     Style="{StaticResource CustomTextBoxStyle}"
+                                     Grid.Column="1"
+                                     Grid.Row="1"
+                                     FontSize="12"
+                                     Margin="0 0 10 0"
+                                     Text=""
+                                     Height="17"
+                                     FontWeight="Regular"
+                                     TextChanged="searchTextBox_TextChanged" />
+
+                            <TextBox x:Name="phoneTextBox"
+                                     Style="{StaticResource CustomTextBoxStyle}"
+                                     Grid.Column="1"
+                                     Grid.Row="2"
+                                     FontSize="12"
+                                     Margin="0 0 10 0"
+                                     Text=""
+                                     Height="17"
+                                     FontWeight="Regular"
+                                     TextChanged="searchTextBox_TextChanged" />
+
+                            <TextBox x:Name="emailTextBox"
+                                     Style="{StaticResource CustomTextBoxStyle}"
+                                     Grid.Column="1"
+                                     Grid.Row="3"
+                                     FontSize="12"
+                                     Margin="0 0 10 0"
+                                     Text=""
+                                     Height="17"
+                                     FontWeight="Regular"
+                                     TextChanged="searchTextBox_TextChanged" />
+
+                            <TextBox x:Name="addressTextBox"
+                                     Style="{StaticResource CustomTextBoxStyle}"
+                                     Grid.Column="1"
+                                     Grid.Row="4"
+                                     FontSize="12"
+                                     Margin="0 0 10 0"
+                                     Text=""
+                                     Height="17"
+                                     FontWeight="Regular"
+                                     TextChanged="searchTextBox_TextChanged" />
+
+                            <TextBox x:Name="imageTextBox"
+                                     Style="{StaticResource CustomTextBoxStyle}"
+                                     Grid.Column="1"
+                                     Grid.Row="5"
+                                     FontSize="12"
+                                     Margin="0 0 10 0"
+                                     Text=""
+                                     Height="17"
+                                     FontWeight="Regular"
+                                     TextChanged="searchTextBox_TextChanged" />
+                        </Grid>
+
+                        <Grid Grid.Column="1">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <Button x:Name="addBtn"
+                                    Style="{StaticResource RegButtonStyle}"
+                                    Margin="5 5 10 5"
+                                    Content="Add"
+                                    Grid.Row="0"
+                                    Click="addBtn_Click"/>
+
+                            <Button x:Name="updateBtn"
+                                    Style="{StaticResource RegButtonStyle}"
+                                    Margin="5 5 10 5"
+                                    Content="Update"
+                                    Grid.Row="1"
+                                    Click="updateBtn_Click"/>
+
+                            <Button x:Name="deleteBtn"
+                                    Style="{StaticResource RegButtonStyle}"
+                                    Margin="5 5 10 5"
+                                    Content="Delete"
+                                    Grid.Row="2"
+                                    Click="deleteBtn_Click"/>
+
+                            <Button x:Name="clearBtn"
+                                    Style="{StaticResource RegButtonStyle}"
+                                    Margin="5 5 10 5"
+                                    Content="Clear"
+                                    Grid.Row="3"
+                                    Click="clearBtn_Click"/>
+
+                        </Grid>
+                    </Grid>
+                    
+                </Border>
+            </Grid>
+        </Grid>
             
     </Grid>
 </UserControl>
