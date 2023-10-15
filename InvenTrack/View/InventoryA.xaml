@@ -46,9 +46,9 @@
         <Border.BorderBrush>
             <LinearGradientBrush StartPoint="0 0"
                                  EndPoint="1 1">
-                <GradientStop Color="#2CA58D"
+                <GradientStop Color="{StaticResource color5}"
                               Offset="0" />
-                <GradientStop Color="#6279B8"
+                <GradientStop Color="{StaticResource color4}"
                               Offset="1" />
             </LinearGradientBrush>
         </Border.BorderBrush>
@@ -151,11 +151,11 @@
                     Grid.RowSpan="2">
 
                 <Border.Background>
-                    <LinearGradientBrush StartPoint="1 0"
-                                         EndPoint="0 1">
-                        <GradientStop Color="{StaticResource backgroundColorWhite}"
+                    <LinearGradientBrush StartPoint="1 1"
+                                         EndPoint="0 0"><!--C0EEE4-->
+                        <GradientStop Color="{StaticResource color3}" 
                                       Offset="0" />
-                        <GradientStop Color="{StaticResource color3}"
+                        <GradientStop Color="{StaticResource color3also}"
                                       Offset="1" />
                     </LinearGradientBrush>
                 </Border.Background>
@@ -280,17 +280,10 @@
                         </StackPanel>
                     </Grid>
 
-                    <Grid Grid.Row="2">
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="300"/>
-                        </Grid.ColumnDefinitions>
-                        
-                        <!--Contect section and child views-->
-                        <ContentControl Content="{Binding CurrentChildView}"
-                                        Margin="25" />
-                    </Grid>
+                    <!--Contect section and child views-->
+                    <ContentControl Content="{Binding CurrentChildView}"
+                                    Margin="25" 
+                                    Grid.Row="2"/>
                 </Grid>
             </Border>
         </Grid>

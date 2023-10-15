@@ -8,203 +8,294 @@
              d:DesignHeight="450"
              d:DesignWidth="800">
 
-    <UserControl.Resources>
-        <!-- Define a Style for the DataGrid to customize its appearance -->
-        <Style x:Key="CustomDataGridStyle"
-               TargetType="{x:Type DataGrid}">
-            <Setter Property="Background"
-                    Value="White" />
-            <Setter Property="Foreground"
-                    Value="Black" />
-            <Setter Property="RowHeaderWidth"
-                    Value="0" />
-            <Setter Property="AutoGenerateColumns"
-                    Value="True" />
-            <Setter Property="HeadersVisibility"
-                    Value="Column" />
-            <Setter Property="CanUserResizeColumns"
-                    Value="True" />
-            <Setter Property="CanUserSortColumns"
-                    Value="False" />
-            <Setter Property="FontFamily"
-                    Value="Montserrat" />
-            <Setter Property="FontSize"
-                    Value="12" />
-            <Setter Property="BorderThickness"
-                    Value="0" />
-            <Setter Property="ColumnHeaderStyle">
-                <Setter.Value>
-                    <Style TargetType="{x:Type DataGridColumnHeader}">
-                        <Setter Property="Background"
-                                Value="#92D1C3" />
-                        <Setter Property="Foreground"
-                                Value="Black" />
-                        <Setter Property="FontWeight"
-                                Value="Bold" />
-                        <Setter Property="FontSize"
-                                Value="14" />
-                        <Setter Property="BorderThickness"
-                                Value="0 0 0 1" />
-                        <Setter Property="BorderBrush"
-                                Value="#042A2B" />
-                        <Setter Property="HorizontalContentAlignment"
-                                Value="Left" />
-                        <Setter Property="VerticalContentAlignment"
-                                Value="Center" />
-                        <Setter Property="Padding"
-                                Value="2 5 70 5" />
-                    </Style>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="ColumnHeaderHeight"
-                    Value="30" />
-            <Setter Property="RowHeight"
-                    Value="30" />
-            <Setter Property="RowBackground"
-                    Value="Transparent" />
-            <Setter Property="AlternatingRowBackground"
-                    Value="LightGray" />
-            <Setter Property="GridLinesVisibility"
-                    Value="Horizontal" />
-            <Setter Property="HorizontalGridLinesBrush"
-                    Value="LightGray" />
-        </Style>
-    </UserControl.Resources>
-
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="8*"/>
-            <RowDefinition Height="1*"/>
-        </Grid.RowDefinitions>
 
-        <!--Search bar-->
-        <TextBox FontSize="14"
-                 FontWeight="Medium"
-                 Text="Search"
-                 FontFamily="Montserrat"
-                 Background="Transparent"
-                 Foreground="Black"
-                 CaretBrush="LightGray"
-                 BorderBrush="#92D1C3"
-                 BorderThickness="0 0 0 1"
-                 Height="28"
-                 VerticalContentAlignment="Center"
-                 Margin="5 5 0 5"    />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7.5*" />
+            <ColumnDefinition Width="2.5*" />
+        </Grid.ColumnDefinitions>
 
-        <!--Inventory table-->
-        <DataGrid x:Name="AInventoryDataGrid"
-                  Style="{StaticResource CustomDataGridStyle}"
-                  Grid.Row="1"></DataGrid>
+        <Grid Grid.Column="0">
 
-        <!--Buttons-->
-        <StackPanel Orientation="Horizontal"
-                    Grid.Row="2">
-            <Button x:Name="ButtonAdd"
-                    Cursor="Hand"
-                    Margin="5"
-                    Content="Add"
-                    Width="120"
-                    Height="25"
-                    FontFamily="Montserrat"
-                    FontWeight="Medium"
-                    FontSize="14">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="9*" />
+            </Grid.RowDefinitions>
 
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Background"
-                                Value="#92D1C3" />
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver"
-                                     Value="True">
-                                <Setter Property="Background"
-                                        Value="#72C2B0" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
+            <Grid Grid.Column="0">
 
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="5"
-                                Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+            </Grid>
 
-            <Button x:Name="ButtonDelete"
-                    Cursor="Hand"
-                    Margin="5"
-                    Content="Delete"
-                    Width="120"
-                    Height="25"
-                    FontFamily="Montserrat"
-                    FontWeight="Medium"
-                    FontSize="14">
+            <!--Search bar-->
+            <Grid Grid.Row="0">
 
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Background"
-                                Value="#92D1C3" />
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver"
-                                     Value="True">
-                                <Setter Property="Background"
-                                        Value="#72C2B0" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".1*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="5"
-                                Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+                <TextBlock FontFamily="Montserrat"
+                           FontWeight="Medium"
+                           FontSize="17"
+                           Foreground="Black"
+                           Padding="0 0 0 5"
+                           Margin="0 0 0 10"
+                           VerticalAlignment="Bottom"
+                           Text="Search" />
 
-            <Button x:Name="ButtonUpdate"
-                    Cursor="Hand"
-                    Margin="5"
-                    Content="Update"
-                    Width="120"
-                    Height="25"
-                    FontFamily="Montserrat"
-                    FontWeight="Medium"
-                    FontSize="14">
 
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Background"
-                                Value="#92D1C3" />
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver"
-                                     Value="True">
-                                <Setter Property="Background"
-                                        Value="#72C2B0" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
+                <TextBox x:Name="searchTextBox"
+                         Style="{StaticResource CustomTextBoxStyle}"
+                         Grid.Column="1"
+                         TextChanged="searchTextBox_TextChanged" />
+            </Grid>
 
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="5"
-                                Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
-        </StackPanel>
+
+            <!--Inventory table-->
+            <DataGrid x:Name="AInventoryDataGrid"
+                      Style="{StaticResource CustomDataGridStyle}"
+                      Grid.Row="1"
+                      SelectionChanged="AInventoryDataGrid_SelectionChanged"></DataGrid>
+
+        </Grid>
+
+        <Grid Grid.Column="1">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3.5*" />
+                <RowDefinition Height="6.5*" />
+            </Grid.RowDefinitions>
+
+            <!--Alerts-->
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Border Background="#92D1C3"
+                        CornerRadius="5 5 0 0"
+                        Margin="5 5 5 0">
+                    <TextBlock FontFamily="Montserrat"
+                               FontWeight="Medium"
+                               FontSize="17"
+                               Foreground="Black"
+                               Padding="10 0 0 0"
+                               VerticalAlignment="Center"
+                               Text="Alerts" />
+                </Border>
+                <Border Background="White"
+                        Grid.Row="1"
+                        CornerRadius="0 0 5 5"
+                        Margin="5 0 5 5">
+
+                </Border>
+            </Grid>
+
+            <!--Edit Inventory-->
+            <Grid Grid.Row="1">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Border Background="#92D1C3"
+                        CornerRadius="5 5 0 0"
+                        Margin="5 5 5 0">
+
+                    <TextBlock FontFamily="Montserrat"
+                               FontWeight="Medium"
+                               FontSize="17"
+                               Foreground="Black"
+                               Padding="10 0 0 0"
+                               VerticalAlignment="Center"
+                               Text="Inventory Operations" />
+
+                </Border>
+
+                <Border Background="White"
+                        Grid.Row="1"
+                        CornerRadius="0 0 5 5"
+                        Margin="5 0 5 5">
+
+                </Border>
+
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <!--Product-->
+                    <TextBlock FontFamily="Montserrat"
+                               FontWeight="Regular"
+                               FontSize="12"
+                               Foreground="Black"
+                               Margin="20 5 0 0"
+                               VerticalAlignment="Center"
+                               Text="Product"
+                               Grid.Row="0" />
+
+                    <TextBox x:Name="productTextBox"
+                             Style="{StaticResource CustomTextBoxStyle}"
+                             Grid.Row="1"
+                             FontSize="12"
+                             Text=""
+                             Margin="20 0 20 0"
+                             Height="17"
+                             FontWeight="Regular"
+                             TextChanged="searchTextBox_TextChanged" />
+
+                    <!--Category-->
+                    <TextBlock FontFamily="Montserrat"
+                               FontWeight="Regular"
+                               FontSize="12"
+                               Foreground="Black"
+                               Margin="20 5 0 0"
+                               VerticalAlignment="Center"
+                               Text="Category"
+                               Grid.Row="2" />
+
+                    <TextBox x:Name="categoryTextBox"
+                             Style="{StaticResource CustomTextBoxStyle}"
+                             Grid.Row="3"
+                             FontSize="12"
+                             Text=""
+                             Margin="20 0 20 0"
+                             Height="17"
+                             FontWeight="Regular"
+                             TextChanged="searchTextBox_TextChanged" />
+
+                    <!--Brand-->
+                    <TextBlock FontFamily="Montserrat"
+                               FontWeight="Regular"
+                               FontSize="12"
+                               Foreground="Black"
+                               Margin="20 5 0 0"
+                               VerticalAlignment="Center"
+                               Text="Brand"
+                               Grid.Row="4" />
+
+                    <TextBox x:Name="brandTextBox"
+                             Style="{StaticResource CustomTextBoxStyle}"
+                             Grid.Row="5"
+                             FontSize="12"
+                             Text=""
+                             Margin="20 0 20 0"
+                             Height="17"
+                             FontWeight="Regular"
+                             TextChanged="searchTextBox_TextChanged" />
+
+                    <!--Stock & Price-->
+                    <Grid Grid.Row="6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock FontFamily="Montserrat"
+                                   FontWeight="Regular"
+                                   FontSize="12"
+                                   Foreground="Black"
+                                   Margin="20 5 0 0"
+                                   VerticalAlignment="Center"
+                                   Text="Stock"
+                                   Grid.Column="0" />
+
+                        <TextBlock FontFamily="Montserrat"
+                                   FontWeight="Regular"
+                                   FontSize="12"
+                                   Foreground="Black"
+                                   Margin="10 5 0 0"
+                                   VerticalAlignment="Center"
+                                   Text="Price"
+                                   Grid.Column="1" />
+                    </Grid>
+
+                    <Grid Grid.Row="7">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox x:Name="stockTextBox"
+                                 Style="{StaticResource CustomTextBoxStyle}"
+                                 Grid.Row="5"
+                                 FontSize="12"
+                                 Text=""
+                                 Margin="20 0 10 0"
+                                 Height="17"
+                                 FontWeight="Regular"
+                                 Grid.Column="0" />
+
+                        <TextBox x:Name="priceTextBox"
+                                 Style="{StaticResource CustomTextBoxStyle}"
+                                 Grid.Row="5"
+                                 FontSize="12"
+                                 Text=""
+                                 Margin="10 0 20 0"
+                                 Height="17"
+                                 FontWeight="Regular"
+                                 Grid.Column="1" />
+                    </Grid>
+
+                    <!--Buttons-->
+                    <Grid Grid.Row="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <Button x:Name="addBtn"
+                                Style="{StaticResource RegButtonStyle}"
+                                Margin="20 5 5 5"
+                                Content="Add"
+                                Grid.Column="0"
+                                Click="addBtn_Click"/>
+
+                        <Button x:Name="updateBtn"
+                                Style="{StaticResource RegButtonStyle}"
+                                Margin="5 5 20 5"
+                                Content="Update"
+                                Grid.Column="1"
+                                Click="updateBtn_Click"/>
+
+                    </Grid>
+
+                    <Grid Grid.Row="9">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <Button x:Name="deleteBtn"
+                                Style="{StaticResource RegButtonStyle}"
+                                Margin="20 5 5 5"
+                                Content="Delete"
+                                Grid.Column="0"
+                                Click="deleteBtn_Click"/>
+
+                        <Button x:Name="clearBtn"
+                                Style="{StaticResource RegButtonStyle}"
+                                Margin="5 5 20 5"
+                                Content="Clear"
+                                Grid.Column="1"
+                                Click="clearBtn_Click"/>
+                    </Grid>
+
+                </Grid>
+            </Grid>
+        </Grid>
     </Grid>
 
 

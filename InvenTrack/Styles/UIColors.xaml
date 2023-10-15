@@ -12,7 +12,8 @@
     <!---Color palette-->
     <Color x:Key="color1">#042A2B</Color>
     <Color x:Key="color2">#92D1C3</Color>
-    <Color x:Key="color3">#F1DEDE</Color>
+    <Color x:Key="color3also">#F1DEDE</Color>
+    <Color x:Key="color3">#EBF4F4</Color>
     <Color x:Key="color4">#6279B8</Color>
     <Color x:Key="color5">#2CA58D</Color>
 
