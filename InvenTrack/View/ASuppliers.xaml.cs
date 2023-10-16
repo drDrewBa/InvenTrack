@@ -26,12 +26,14 @@ namespace InvenTrack.View
         private SqlConnection conn = new SqlConnection(@"Data Source=DESKTOP-QP317C6;Initial Catalog=JaensGadgetGarage;Integrated Security=True");
         private SqlCommand cmd;
         private string selectedPhone, selectedName, selectedCompany;
-
+        private string imageURL = "https://static.vecteezy.com/system/resources/previews/012/938/294/non_2x/account-avatar-pixel-perfect-gradient-linear-ui-icon-personal-page-of-site-user-access-to-profile-line-color-user-interface-symbol-modern-style-pictogram-isolated-outline-illustration-vector.jpg";
+        
         public ASuppliers()
         {
             InitializeComponent();
             cmd = new SqlCommand("SELECT Name, Company, Phone FROM Contacts", conn);
             LoadGrid(cmd);
+            contactImage.ImageSource = new BitmapImage(new Uri(imageURL, UriKind.RelativeOrAbsolute));
         }
 
         // Check if operation requested is viable
@@ -57,7 +59,7 @@ namespace InvenTrack.View
             return count > 0;
         }
 
-        // Updating tables, commands, views
+        // Updating DataGrids, commands, views
         private void ClearData()
         {
             nameTextBox.Clear();
@@ -136,9 +138,12 @@ namespace InvenTrack.View
                                     {
                                         nameText.Text = reader["Name"].ToString();
                                         companyText.Text = reader["Company"].ToString();
-                                        phoneText.Text = "Phone: " + reader["Phone"].ToString();
-                                        emailText.Text = "Email: " + reader["Email"].ToString();
-                                        addressText.Text = "Address: " + reader["Address"].ToString();
+                                        phoneText.Text = reader["Phone"].ToString();
+                                        emailText.Text = reader["Email"].ToString();
+                                        addressText.Text = reader["Address"].ToString();
+                                        imageURL = reader["Image"].ToString();
+
+                                        contactImage.ImageSource = new BitmapImage(new Uri(imageURL, UriKind.RelativeOrAbsolute));
                                     }
                                 }
                             }
