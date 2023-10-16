@@ -26,8 +26,7 @@ namespace InvenTrack.View
         private SqlConnection conn = new SqlConnection(@"Data Source=DESKTOP-QP317C6;Initial Catalog=JaensGadgetGarage;Integrated Security=True");
         private SqlCommand cmd;
         private string selectedPhone, selectedName, selectedCompany;
-        private string imageURL = "https://static.vecteezy.com/system/resources/previews/012/938/294/non_2x/account-avatar-pixel-perfect-gradient-linear-ui-icon-personal-page-of-site-user-access-to-profile-line-color-user-interface-symbol-modern-style-pictogram-isolated-outline-illustration-vector.jpg";
-        
+        private string imageURL = "https://i.pinimg.com/564x/9e/83/75/9e837528f01cf3f42119c5aeeed1b336.jpg";
         public ASuppliers()
         {
             InitializeComponent();

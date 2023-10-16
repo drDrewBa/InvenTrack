@@ -99,6 +99,13 @@
                         CornerRadius="0 0 5 5"
                         Margin="5 0 5 5">
 
+                    <!--Inventory table-->
+                    <DataGrid x:Name="AAlertsDataGrid"
+                              Style="{StaticResource CustomDataGridStyle}"
+                              Grid.Row="1"
+                              HeadersVisibility="None"
+                              Margin="0 0 0 0"></DataGrid>
+                    
                 </Border>
             </Grid>
 

@@ -33,6 +33,8 @@ namespace InvenTrack.View
             InitializeComponent();
             cmd = new SqlCommand("SELECT * FROM Inventory", conn);
             LoadGrid(cmd);
+            //CheckLowStock();
+            LoadAlertsGrid();
         }
 
         // Check if operation requested is viable
@@ -112,6 +114,17 @@ namespace InvenTrack.View
             AInventoryDataGrid.ItemsSource = dt.DefaultView;
         }
 
+        public void LoadAlertsGrid()
+        {
+            cmd = new SqlCommand("SELECT * FROM Alerts", conn);
+            DataTable dt = new DataTable();
+            conn.Open();
+            SqlDataReader sdr = cmd.ExecuteReader();
+            dt.Load(sdr);
+            conn.Close();
+            AAlertsDataGrid.ItemsSource = dt.DefaultView;
+        }
+
         public void LoadGrid(SqlCommand cmd)
         {
             DataTable dt = new DataTable();
@@ -121,6 +134,40 @@ namespace InvenTrack.View
             conn.Close();
             AInventoryDataGrid.ItemsSource = dt.DefaultView;
         }
+
+        //private void CheckLowStock()
+        //{
+        //    try
+        //    {
+        //        conn.Open();
+        //        cmd = new SqlCommand("SELECT ID, Product, Stock FROM Inventory WHERE Stock < 10", conn);
+        //        SqlDataReader reader = cmd.ExecuteReader();
+
+        //        while (reader.Read())
+        //        {
+        //            int productId = (int)reader["ID"];
+        //            string productName = reader["Product"].ToString();
+
+        //            // Insert an alert into the "Alerts" table
+        //            SqlCommand insertAlertCmd = new SqlCommand(
+        //                "INSERT INTO Alerts (AlertDateTime, AlertMessage) " +
+        //                "VALUES (@AlertDateTime, @Message)", conn);
+
+        //            insertAlertCmd.Parameters.AddWithValue("@AlertDateTime", DateTime.Now);
+        //            insertAlertCmd.Parameters.AddWithValue("@Message", $"{productName} is low in stock!");
+
+        //            insertAlertCmd.ExecuteNonQuery(); // Execute the insert command
+        //        }
+
+        //        reader.Close(); // Close the reader before proceeding
+
+        //        conn.Close(); // Close the connection after processing
+        //    }
+        //    catch (SqlException ex)
+        //    {
+        //        MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
+        //    }
+        //}
 
         // Operations
         private void clearBtn_Click(object sender, RoutedEventArgs e)
@@ -165,6 +212,8 @@ namespace InvenTrack.View
                         conn.Open();
                         cmd.ExecuteNonQuery();
                         conn.Close();
+                        //CheckLowStock();
+                        LoadAlertsGrid();
                         LoadGrid();
                         ClearData();
                     }  
@@ -190,6 +239,8 @@ namespace InvenTrack.View
                         cmd = new SqlCommand($"DELETE FROM Inventory WHERE ID = '{selectedID}'", conn);
                         cmd.ExecuteNonQuery();
                         conn.Close();
+                        //CheckLowStock();
+                        LoadAlertsGrid();
                         ClearData();
                         LoadGrid();
                     }
@@ -221,6 +272,8 @@ namespace InvenTrack.View
                             $"Stock = '{stockTextBox.Text}', Price = '{priceTextBox.Text}' WHERE ID = '{selectedID}'", conn);
                         cmd.ExecuteNonQuery();
                         conn.Close();
+                        //CheckLowStock();
+                        LoadAlertsGrid();
                         ClearData();
                         LoadGrid();
                     }

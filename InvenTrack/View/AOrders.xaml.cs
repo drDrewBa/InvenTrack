@@ -244,7 +244,25 @@ namespace InvenTrack.View
 
         private void completeBtn_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(receivedTextBox.Text) || !decimal.TryParse(receivedTextBox.Text, out receivedValue))
+            {
+                MessageBox.Show("Enter a valid decimal for received amount.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
 
+            decimal totalAmount = CalculateTotal();
+            decimal change = receivedValue - totalAmount;
+
+            using (SqlCommand cmd = new SqlCommand("DELETE FROM Orders", conn))
+            {
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+
+            changeTxt.Text = change.ToString("0.00");
+
+            LoadOrderGrid();
         }
     }
 }
