@@ -47,7 +47,7 @@
                 <TextBox x:Name="searchTextBox"
                          Style="{StaticResource CustomTextBoxStyle}"
                          Grid.Column="1"
-                         TextChanged="searchTextBox_TextChanged" />
+                         TextChanged="SearchTextBox_TextChanged" />
             </Grid>
 
 
@@ -55,6 +55,7 @@
             <DataGrid x:Name="AInventoryDataGrid"
                       Style="{StaticResource CustomDataGridStyle}"
                       Grid.Row="1"
+                      IsReadOnly="True"
                       SelectionChanged="AInventoryDataGrid_SelectionChanged"></DataGrid>
 
         </Grid>
@@ -72,6 +73,52 @@
                     <RowDefinition Height="50" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
+
+                <Grid Panel.ZIndex="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="8*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button x:Name="btnClearAlerts"
+                            BorderThickness="0"
+                            Content=" X "
+                            Foreground="Black"
+                            FontSize="20"
+                            FontFamily="Montserrat"
+                            Cursor="Hand"
+                            Grid.Column="1"
+                            Click="btnClearAlerts_Click"
+                            Margin="0 0 5 0">
+
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background"
+                                        Value="White" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver"
+                                             Value="True">
+                                        <Setter Property="Background"
+                                                Value="LightGray" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Width="25"
+                                        Height="25"
+                                        CornerRadius="7"
+                                        Background="{TemplateBinding Background}">
+                                    <ContentPresenter VerticalAlignment="Center"
+                                                      HorizontalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+
+                    </Button>
+                </Grid>
 
                 <Border CornerRadius="5 5 0 0"
                         Margin="5 5 5 0">
@@ -93,6 +140,7 @@
                                Padding="10 0 0 0"
                                VerticalAlignment="Center"
                                Text="Alerts" />
+
                 </Border>
                 <Border Background="White"
                         Grid.Row="1"
@@ -101,11 +149,44 @@
 
                     <!--Inventory table-->
                     <DataGrid x:Name="AAlertsDataGrid"
-                              Style="{StaticResource CustomDataGridStyle}"
+                              AutoGenerateColumns="False"
                               Grid.Row="1"
+                              FontSize="10"
                               HeadersVisibility="None"
-                              Margin="0 0 0 0"></DataGrid>
-                    
+                              IsReadOnly="True"
+                              FontFamily="Montserrat"
+                              FontWeight="Light"
+                              CanUserResizeColumns="False"
+                              CanUserResizeRows="False"
+                              BorderThickness="0"
+                              Margin="5"
+                              Background="Transparent"
+                              GridLinesVisibility="None">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Alert DateTime"
+                                                Width="70"
+                                                Binding="{Binding AlertDateTime}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.TextWrapping"
+                                                Value="Wrap" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Message"
+                                                Width="150"
+                                                Binding="{Binding Message}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.TextWrapping"
+                                                Value="Wrap" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+
+                    </DataGrid>
                 </Border>
             </Grid>
 
@@ -217,7 +298,7 @@
                              Text=""
                              Margin="20 0 20 0"
                              Height="17"
-                             FontWeight="Regular"/>
+                             FontWeight="Regular" />
 
                     <!--Stock & Price-->
                     <Grid Grid.Row="6">
@@ -284,14 +365,14 @@
                                 Margin="20 5 5 5"
                                 Content="Add"
                                 Grid.Column="0"
-                                Click="addBtn_Click"/>
+                                Click="addBtn_Click" />
 
                         <Button x:Name="updateBtn"
                                 Style="{StaticResource RegButtonStyle}"
                                 Margin="5 5 20 5"
                                 Content="Update"
                                 Grid.Column="1"
-                                Click="updateBtn_Click"/>
+                                Click="updateBtn_Click" />
 
                     </Grid>
 
@@ -306,20 +387,17 @@
                                 Margin="20 5 5 5"
                                 Content="Delete"
                                 Grid.Column="0"
-                                Click="deleteBtn_Click"/>
+                                Click="deleteBtn_Click" />
 
                         <Button x:Name="clearBtn"
                                 Style="{StaticResource RegButtonStyle}"
                                 Margin="5 5 20 5"
                                 Content="Clear"
                                 Grid.Column="1"
-                                Click="clearBtn_Click"/>
+                                Click="ClearBtn_Click" />
                     </Grid>
-
                 </Grid>
             </Grid>
         </Grid>
     </Grid>
-
-
 </UserControl>

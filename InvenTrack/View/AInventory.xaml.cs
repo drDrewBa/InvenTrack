@@ -1,99 +1,102 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data;
+using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Data.SqlClient;
-using System.Data;
+using InvenTrack.Model;
 
 namespace InvenTrack.View
 {
-    /// <summary>
-    /// Interaction logic for AInventory.xaml
-    /// </summary>
     public partial class AInventory : UserControl
     {
-
-        private SqlConnection conn = new SqlConnection(@"Data Source=DESKTOP-QP317C6;Initial Catalog=JaensGadgetGarage;Integrated Security=True");
+        private readonly SqlConnection conn;
         private SqlCommand cmd;
+        private string connectionString = @"Data Source=DESKTOP-QP317C6;Initial Catalog=JaensGadgetGarage;Integrated Security=True";
+
         private int selectedID;
-        private string selectedProduct, selectedCategory, selectedBrand, selectedStock, selectedPrice;
+        private string selectedProduct;
+        private string selectedCategory;
+        private string selectedBrand;
+        private string selectedStock;
+        private string selectedPrice;
 
         public AInventory()
         {
             InitializeComponent();
-            cmd = new SqlCommand("SELECT * FROM Inventory", conn);
-            LoadGrid(cmd);
-            //CheckLowStock();
+            conn = new SqlConnection(connectionString);
+            searchTextBox.TextChanged += SearchTextBox_TextChanged;
+            clearBtn.Click += ClearBtn_Click;
+
+            CheckLowStock();
             LoadAlertsGrid();
+            LoadGrid("SELECT * FROM Inventory");
+           
         }
 
-        // Check if operation requested is viable
-        private bool IsValid()
+        private void LoadGrid(string query)
         {
-            if (string.IsNullOrWhiteSpace(productTextBox.Text) || string.IsNullOrWhiteSpace(categoryTextBox.Text) || string.IsNullOrWhiteSpace(brandTextBox.Text) ||
-                !int.TryParse(stockTextBox.Text, out _) || !decimal.TryParse(priceTextBox.Text, out _))
+            try
             {
-                MessageBox.Show("There are missing values or incorrect inputs.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                return false;
+                conn.Open();
+                cmd = new SqlCommand(query, conn);
+                DataTable dt = new DataTable();
+                SqlDataReader sdr = cmd.ExecuteReader();
+                dt.Load(sdr);
+                conn.Close();
+                AInventoryDataGrid.ItemsSource = dt.DefaultView;
             }
-
-            return true;
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
-        private bool ProductExists(string productName)
+        private void LoadAlertsGrid()
         {
-            conn.Open();
-            SqlCommand checkCmd = new SqlCommand("SELECT COUNT(*) FROM Inventory WHERE Product = @Product", conn);
-            checkCmd.Parameters.AddWithValue("@Product", productName);
-            int count = (int)checkCmd.ExecuteScalar();
-            conn.Close();
-            return count > 0;
+            try
+            {
+                conn.Open();
+
+                cmd = new SqlCommand("SELECT * FROM Alerts", conn);
+                DataTable dt = new DataTable();
+                SqlDataReader sdr = cmd.ExecuteReader();
+                dt.Load(sdr);
+
+                SqlCommand deleteCmd = new SqlCommand("DELETE FROM Alerts", conn);
+                deleteCmd.ExecuteNonQuery();
+
+                conn.Close();
+
+                AAlertsDataGrid.ItemsSource = dt.DefaultView;
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void AInventoryDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            try
+            if (AInventoryDataGrid.SelectedItem != null)
             {
-                if (AInventoryDataGrid.SelectedItem != null)
-                {
+                DataRowView selectedRow = (DataRowView)AInventoryDataGrid.SelectedItem;
+                selectedID = (int)selectedRow["ID"];
+                selectedProduct = selectedRow["Product"].ToString();
+                selectedCategory = selectedRow["Category"].ToString();
+                selectedBrand = selectedRow["Brand"].ToString();
+                selectedStock = selectedRow["Stock"].ToString();
+                selectedPrice = selectedRow["Price"].ToString();
 
-                    DataRowView selectedRow = (DataRowView)AInventoryDataGrid.SelectedItem;
-                    selectedID = (int)selectedRow["ID"];
-
-                    selectedProduct = (AInventoryDataGrid.SelectedItem as DataRowView)["Product"].ToString();
-                    productTextBox.Text = selectedProduct;
-
-                    selectedCategory = (AInventoryDataGrid.SelectedItem as DataRowView)["Category"].ToString();
-                    categoryTextBox.Text = selectedCategory;
-
-                    selectedBrand = (AInventoryDataGrid.SelectedItem as DataRowView)["Brand"].ToString();
-                    brandTextBox.Text = selectedBrand;
-
-                    selectedStock = (AInventoryDataGrid.SelectedItem as DataRowView)["Stock"].ToString();
-                    stockTextBox.Text = selectedStock;
-
-                    selectedPrice = (AInventoryDataGrid.SelectedItem as DataRowView)["Price"].ToString();
-                    priceTextBox.Text = selectedPrice;
-                }
+                productTextBox.Text = selectedProduct;
+                categoryTextBox.Text = selectedCategory;
+                brandTextBox.Text = selectedBrand;
+                stockTextBox.Text = selectedStock;
+                priceTextBox.Text = selectedPrice;
             }
-            catch
-            {
-                MessageBox.Show("Row selected in NULL", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-
         }
 
-        // Update the DataGrid, update Inventory Operations
         private void ClearData()
         {
             productTextBox.Clear();
@@ -103,107 +106,68 @@ namespace InvenTrack.View
             priceTextBox.Clear();
         }
 
-        public void LoadGrid()
+        private bool IsValid()
         {
-            cmd = new SqlCommand("SELECT * FROM Inventory", conn);
-            DataTable dt = new DataTable();
-            conn.Open();
-            SqlDataReader sdr = cmd.ExecuteReader();
-            dt.Load(sdr);
-            conn.Close();
-            AInventoryDataGrid.ItemsSource = dt.DefaultView;
-        }
-
-        public void LoadAlertsGrid()
-        {
-            cmd = new SqlCommand("SELECT * FROM Alerts", conn);
-            DataTable dt = new DataTable();
-            conn.Open();
-            SqlDataReader sdr = cmd.ExecuteReader();
-            dt.Load(sdr);
-            conn.Close();
-            AAlertsDataGrid.ItemsSource = dt.DefaultView;
-        }
-
-        public void LoadGrid(SqlCommand cmd)
-        {
-            DataTable dt = new DataTable();
-            conn.Open();
-            SqlDataReader sdr = cmd.ExecuteReader();
-            dt.Load(sdr);
-            conn.Close();
-            AInventoryDataGrid.ItemsSource = dt.DefaultView;
-        }
-
-        //private void CheckLowStock()
-        //{
-        //    try
-        //    {
-        //        conn.Open();
-        //        cmd = new SqlCommand("SELECT ID, Product, Stock FROM Inventory WHERE Stock < 10", conn);
-        //        SqlDataReader reader = cmd.ExecuteReader();
-
-        //        while (reader.Read())
-        //        {
-        //            int productId = (int)reader["ID"];
-        //            string productName = reader["Product"].ToString();
-
-        //            // Insert an alert into the "Alerts" table
-        //            SqlCommand insertAlertCmd = new SqlCommand(
-        //                "INSERT INTO Alerts (AlertDateTime, AlertMessage) " +
-        //                "VALUES (@AlertDateTime, @Message)", conn);
-
-        //            insertAlertCmd.Parameters.AddWithValue("@AlertDateTime", DateTime.Now);
-        //            insertAlertCmd.Parameters.AddWithValue("@Message", $"{productName} is low in stock!");
-
-        //            insertAlertCmd.ExecuteNonQuery(); // Execute the insert command
-        //        }
-
-        //        reader.Close(); // Close the reader before proceeding
-
-        //        conn.Close(); // Close the connection after processing
-        //    }
-        //    catch (SqlException ex)
-        //    {
-        //        MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
-        //    }
-        //}
-
-        // Operations
-        private void clearBtn_Click(object sender, RoutedEventArgs e)
-        {
-            ClearData();
-        }
-
-        private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(searchTextBox.Text))
+            if (string.IsNullOrWhiteSpace(productTextBox.Text) || string.IsNullOrWhiteSpace(categoryTextBox.Text) || string.IsNullOrWhiteSpace(brandTextBox.Text) ||
+                !int.TryParse(stockTextBox.Text, out _) || !decimal.TryParse(priceTextBox.Text, out _))
             {
-                cmd = new SqlCommand($"SELECT * FROM Inventory WHERE Product LIKE '%{searchTextBox.Text}%' OR Brand LIKE '%{searchTextBox.Text}%' OR Category LIKE '%{searchTextBox.Text}%'", conn);
-                LoadGrid(cmd);
+                MessageBox.Show("There are missing values or incorrect inputs.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return false;
             }
-            else
+            return true;
+        }
+
+        private bool ProductExists(string productName)
+        {
+            try
             {
-                cmd = new SqlCommand("SELECT * FROM Inventory", conn);
-                LoadGrid(cmd);
+                conn.Open();
+                SqlCommand checkCmd = new SqlCommand("SELECT COUNT(*) FROM Inventory WHERE Product = @Product", conn);
+                checkCmd.Parameters.AddWithValue("@Product", productName);
+                int count = (int)checkCmd.ExecuteScalar();
+                return count > 0;
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        private void btnClearAlerts_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                conn.Open();
+                cmd = new SqlCommand("DELETE FROM Alerts", conn);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                LoadAlertsGrid();
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         private void addBtn_Click(object sender, RoutedEventArgs e)
         {
-            try
+            if (IsValid())
             {
-                if (IsValid())
+                try
                 {
                     string productName = productTextBox.Text;
                     if (ProductExists(productName))
                     {
-                        MessageBox.Show("This item already exists. Use Update operation.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
+                        MessageBox.Show("This item already exists. Use the Update operation.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                     else
                     {
                         cmd = new SqlCommand("INSERT INTO Inventory (Product, Category, Brand, Stock, Price) VALUES (@Product, @Category, @Brand, @Stock, @Price)", conn);
-                        cmd.CommandType = CommandType.Text;
                         cmd.Parameters.AddWithValue("@Product", productTextBox.Text);
                         cmd.Parameters.AddWithValue("@Category", categoryTextBox.Text);
                         cmd.Parameters.AddWithValue("@Brand", brandTextBox.Text);
@@ -212,16 +176,16 @@ namespace InvenTrack.View
                         conn.Open();
                         cmd.ExecuteNonQuery();
                         conn.Close();
-                        //CheckLowStock();
+                        CheckLowStock();
                         LoadAlertsGrid();
-                        LoadGrid();
+                        LoadGrid("SELECT * FROM Inventory");
                         ClearData();
-                    }  
+                    }
                 }
-            }
-            catch (SqlException ex)
-            {
-                MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
+                catch (SqlException ex)
+                {
+                    MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
@@ -233,16 +197,16 @@ namespace InvenTrack.View
                 {
                     try
                     {
-                        conn.Open();
                         DataRowView selectedRow = (DataRowView)AInventoryDataGrid.SelectedItem;
                         int selectedID = (int)selectedRow["ID"];
+                        conn.Open();
                         cmd = new SqlCommand($"DELETE FROM Inventory WHERE ID = '{selectedID}'", conn);
                         cmd.ExecuteNonQuery();
                         conn.Close();
-                        //CheckLowStock();
+                        CheckLowStock();
                         LoadAlertsGrid();
                         ClearData();
-                        LoadGrid();
+                        LoadGrid("SELECT * FROM Inventory");
                     }
                     catch (SqlException ex)
                     {
@@ -260,33 +224,102 @@ namespace InvenTrack.View
         {
             if (AInventoryDataGrid.SelectedItem != null)
             {
-                try
+                if (IsValid())
                 {
-                    if (IsValid())
+                    try
                     {
-                        conn.Open();
                         DataRowView selectedRow = (DataRowView)AInventoryDataGrid.SelectedItem;
                         int selectedID = (int)selectedRow["ID"];
-                        cmd = new SqlCommand($"UPDATE Inventory SET Product = '{productTextBox.Text}', " +
-                            $"Category = '{categoryTextBox.Text}', Brand = '{brandTextBox.Text}', " +
-                            $"Stock = '{stockTextBox.Text}', Price = '{priceTextBox.Text}' WHERE ID = '{selectedID}'", conn);
+                        cmd = new SqlCommand("UPDATE Inventory SET Product = @Product, Category = @Category, Brand = @Brand, Stock = @Stock, Price = @Price WHERE ID = @ID", conn);
+                        cmd.Parameters.AddWithValue("@Product", productTextBox.Text);
+                        cmd.Parameters.AddWithValue("@Category", categoryTextBox.Text);
+                        cmd.Parameters.AddWithValue("@Brand", brandTextBox.Text);
+                        cmd.Parameters.AddWithValue("@Stock", stockTextBox.Text);
+                        cmd.Parameters.AddWithValue("@Price", priceTextBox.Text);
+                        cmd.Parameters.AddWithValue("@ID", selectedID);
+                        conn.Open();
                         cmd.ExecuteNonQuery();
                         conn.Close();
-                        //CheckLowStock();
+                        CheckLowStock();
                         LoadAlertsGrid();
                         ClearData();
-                        LoadGrid();
+                        LoadGrid("SELECT * FROM Inventory");
                     }
-                }
-                catch (SqlException ex)
-                {
-                    MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
+                    catch (SqlException ex)
+                    {
+                        MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
             }
             else
             {
-                // Inform the user that they need to select a row
                 MessageBox.Show("Please select a row to update.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+            string query;
+
+            if (!string.IsNullOrEmpty(searchTextBox.Text))
+            {
+                query = $"SELECT * FROM Inventory WHERE Product LIKE '%{searchTextBox.Text}%' OR Brand LIKE '%{searchTextBox.Text}%' OR Category LIKE '%{searchTextBox.Text}%'";
+                LoadGrid(query);
+            }
+            else
+            {
+                query = "SELECT * FROM Inventory";
+                LoadGrid(query);
+            }
+        }
+
+        private void ClearBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ClearData();
+        }
+
+        private void CheckLowStock()
+        {
+            try
+            {
+                conn.Open();
+                cmd = new SqlCommand("SELECT ID, Product, Stock FROM Inventory WHERE Stock < 10", conn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                List<SqlCommand> insertAlertCmds = new List<SqlCommand>();
+
+                while (reader.Read())
+                {
+                    int productId = (int)reader["ID"];
+                    string productName = reader["Product"].ToString();
+
+                    SqlCommand insertAlertCmd = new SqlCommand("INSERT INTO Alerts (AlertDateTime, Message) VALUES (@AlertDateTime, @Message)", conn);
+                    insertAlertCmd.Parameters.AddWithValue("@AlertDateTime", DateTime.Now);
+                    insertAlertCmd.Parameters.AddWithValue("@Message", $"{productName} is low in stock!");
+
+                    insertAlertCmds.Add(insertAlertCmd);
+                }
+
+                reader.Close();
+                conn.Close();
+
+                foreach (var insertCmd in insertAlertCmds)
+                {
+                    conn.Open();
+                    insertCmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
             }
         }
     }

@@ -145,11 +145,12 @@
                     Grid.Column="2">
 
                 <Border.Background>
-                    <LinearGradientBrush StartPoint="1 0"
-                                         EndPoint="0 1">
-                        <GradientStop Color="{StaticResource backgroundColorWhite}"
-                                      Offset="0" />
+                    <LinearGradientBrush StartPoint="1 1"
+                                         EndPoint="0 0">
+                        <!--C0EEE4-->
                         <GradientStop Color="{StaticResource color3}"
+                                      Offset="0" />
+                        <GradientStop Color="{StaticResource color3also}"
                                       Offset="1" />
                     </LinearGradientBrush>
                 </Border.Background>

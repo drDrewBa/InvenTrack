@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using static System.Net.Mime.MediaTypeNames;
+using System.Diagnostics;
 
 namespace InvenTrack.View
 {
@@ -57,6 +58,21 @@ namespace InvenTrack.View
             dt.Load(sdr);
             conn.Close();
             AInventoryDataGrid.ItemsSource = dt.DefaultView;
+        }
+
+        private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+            if (!string.IsNullOrEmpty(searchTextBox.Text))
+            {
+                cmd = new SqlCommand($"SELECT * FROM Inventory WHERE Product LIKE '%{searchTextBox.Text}%' OR Brand LIKE '%{searchTextBox.Text}%' OR Category LIKE '%{searchTextBox.Text}%'", conn);
+                LoadInventoryGrid(cmd);
+            }
+            else
+            {
+                cmd = new SqlCommand("SELECT ID, Product, Stock, Price FROM Inventory", conn);
+                LoadInventoryGrid(cmd);
+            }
         }
 
         // Computing for total

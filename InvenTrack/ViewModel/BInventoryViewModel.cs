@@ -8,5 +8,6 @@ namespace InvenTrack.ViewModel
 {
     public class BInventoryViewModel : ViewModelBase
     {
+
     }
 }

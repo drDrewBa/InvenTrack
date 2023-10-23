@@ -42,13 +42,15 @@
                 <TextBox x:Name="searchTextBox"
                          Style="{StaticResource CustomTextBoxStyle}"
                          Grid.Column="1"
-                         Margin="5 0 10 0" />
+                         Margin="5 0 10 0"
+                         TextChanged="searchTextBox_TextChanged" />
             </Grid>
 
             <!--Inventory table-->
             <DataGrid x:Name="AInventoryDataGrid"
                       Style="{StaticResource CustomDataGridStyle}"
                       Grid.Row="1"
+                      IsReadOnly="True"
                       Margin="5 0 10 0">
 
             </DataGrid>
@@ -86,18 +88,19 @@
                         Content="Add to Order"
                         Grid.Column="2"
                         Grid.Row="0"
-                        Click="addBtn_Click"/>
+                        Click="addBtn_Click" />
             </Grid>
         </Grid>
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition Height="5*" />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="200" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
 
             <TextBlock FontFamily="Montserrat"
@@ -105,18 +108,20 @@
                        FontSize="17"
                        Foreground="Black"
                        Padding="0 0 0 5"
-                       Margin="10 0 0 10"
-                       VerticalAlignment="Bottom"
+                       Margin="10,0,0,0"
+                       VerticalAlignment="Center"
                        Text="Customer Order" />
 
             <DataGrid x:Name="AOrderDataGrid"
                       Style="{StaticResource CustomDataGridStyle}"
                       Grid.Row="1"
-                      Margin="5 0 10 0">
+                      IsReadOnly="True"
+                      Margin="5 0 10 0"
+                      Grid.RowSpan="2">
 
             </DataGrid>
 
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
@@ -127,17 +132,17 @@
                         Margin="5 15 5 15"
                         Content="Remove from Order"
                         Grid.Column="0"
-                        Click="removeBtn_Click"/>
+                        Click="removeBtn_Click" />
 
                 <Button x:Name="cancelBtn"
                         Style="{StaticResource RegButtonStyle}"
                         Margin="5 15 10 15"
                         Content="Cancel Order"
                         Grid.Column="1"
-                        Click="cancelBtn_Click"/>
+                        Click="cancelBtn_Click" />
             </Grid>
 
-            <Grid Grid.Row="3">
+            <Grid Grid.Row="4">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="6*" />
                     <ColumnDefinition Width="4*" />
@@ -184,7 +189,7 @@
                          FontWeight="Regular" />
             </Grid>
 
-            <Grid Grid.Row="4">
+            <Grid Grid.Row="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*" />
                     <ColumnDefinition Width="7*" />
@@ -212,10 +217,10 @@
 
             <Button x:Name="completeBtn"
                     Style="{StaticResource RegButtonStyle}"
-                    Margin="5 15 5 15"
+                    Margin="5,15,5,15"
                     Content="Complete Order"
-                    Grid.Row="5"
-                    Click="completeBtn_Click"/>
+                    Grid.Row="6"
+                    Click="completeBtn_Click" />
 
 
         </Grid>

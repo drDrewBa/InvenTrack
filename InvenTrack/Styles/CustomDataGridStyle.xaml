@@ -56,9 +56,7 @@
         <Setter Property="AlternatingRowBackground"
                 Value="LightGray" />
         <Setter Property="GridLinesVisibility"
-                Value="Horizontal" />
-        <Setter Property="HorizontalGridLinesBrush"
-                Value="LightGray" />
+                Value="None" />
     </Style>
     
 </ResourceDictionary>

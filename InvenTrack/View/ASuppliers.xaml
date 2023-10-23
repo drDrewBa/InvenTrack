@@ -48,6 +48,7 @@
             <DataGrid x:Name="ASuppliersDataGrid"
                       Style="{StaticResource CustomDataGridStyle}"
                       Grid.Row="1"
+                      IsReadOnly="True"
                       Margin="5 0 10 0"
                       SelectionChanged="ASuppliersDataGrid_SelectionChanged"></DataGrid>
         </Grid>
