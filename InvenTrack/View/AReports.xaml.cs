@@ -25,12 +25,14 @@ namespace InvenTrack.View
     /// </summary>
     public partial class AReports : UserControl
     {
+
+        // Initializing connections and variables -----------------------------------------------------------------------------------------------------------------------------------
         private readonly SqlConnection conn;
         private SqlCommand cmd;
         private string connectionString = @"Data Source=DESKTOP-QP317C6;Initial Catalog=JaensGadgetGarage;Integrated Security=True";
-
         public Func<ChartPoint, string> PointLabel { get; set; }
 
+        // Construct the child view -------------------------------------------------------------------------------------------------------------------------------------------------
         public AReports()
         {
             InitializeComponent();
@@ -46,6 +48,7 @@ namespace InvenTrack.View
             DataContext = this;
         }
 
+        // Load Data Grid ------------------------------------------------------------------------------------------------------------------------------------------------------------
         private void LoadAuditGrid()
         {
             try
@@ -62,7 +65,8 @@ namespace InvenTrack.View
             }
             catch (SqlException ex)
             {
-                MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, "InvenTrack", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -101,10 +105,10 @@ namespace InvenTrack.View
 
                     var pieSeries = new PieSeries
                     {
-                        Title = product, // Display the product name in the legend
+                        Title = product,
                         Values = new ChartValues<double> { stockPercentage },
-                        DataLabels = true, // Display data labels
-                        LabelPoint = point => $"{stockPercentage:F2}%" // Show only the percentage in data labels
+                        DataLabels = true,
+                        LabelPoint = point => $"{stockPercentage:F2}%" 
                     };
 
                     // Add the current PieSeries to the SeriesCollection
@@ -133,14 +137,12 @@ namespace InvenTrack.View
 
                 // Create a new SeriesCollection for the chart
                 var seriesCollection = new SeriesCollection();
-
-                // Create a LineSeries for displaying TotalSales data
                 var lineSeries = new LineSeries
                 {
                     Title = "TotalSales",
                     Values = new ChartValues<double>(),
-                    PointGeometry = DefaultGeometries.Circle, // Customize point shape
-                    PointGeometrySize = 15, // Customize point size
+                    PointGeometry = DefaultGeometries.Circle,
+                    PointGeometrySize = 10,
                 };
 
                 // Add data points to the LineSeries
@@ -149,7 +151,6 @@ namespace InvenTrack.View
                     var ordersDate = Convert.ToDateTime(row["OrdersDate"]);
                     var totalSales = Convert.ToDouble(row["TotalSales"]);
 
-                    // Add data points to the LineSeries
                     lineSeries.Values.Add(totalSales);
                 }
 
@@ -161,15 +162,14 @@ namespace InvenTrack.View
                     Labels = xValues.Select(date => date.ToString("yyyy-MM-dd")).ToList()
                 });
 
-                // Add the LineSeries to the SeriesCollection
                 seriesCollection.Add(lineSeries);
-
-                // Bind the SeriesCollection to the chart
                 salesChart.Series = seriesCollection;
             }
             catch (SqlException ex)
             {
-                MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, 
+                    "InvenTrack", MessageBoxButton.OK, 
+                    MessageBoxImage.Error);
             }
         }
 
@@ -181,11 +181,13 @@ namespace InvenTrack.View
                 cmd = new SqlCommand("DELETE FROM Audit", conn);
                 cmd.ExecuteNonQuery();
                 conn.Close();
-                LoadPie();
+                LoadAuditGrid();
             }
             catch (SqlException ex)
             {
-                MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, 
+                    "InvenTrack", MessageBoxButton.OK, 
+                    MessageBoxImage.Error);
             }
         }
     }

@@ -11,6 +11,8 @@ namespace InvenTrack.View
 {
     public partial class AInventory : UserControl
     {
+
+        // Initializing connection variables ------------------------------------------------------------------------------------------------------------------------
         private readonly SqlConnection conn;
         private SqlCommand cmd;
         private string connectionString = @"Data Source=DESKTOP-QP317C6;Initial Catalog=JaensGadgetGarage;Integrated Security=True";
@@ -22,6 +24,7 @@ namespace InvenTrack.View
         private string selectedStock;
         private string selectedPrice;
 
+        // Initalize components -------------------------------------------------------------------------------------------------------------------------------------
         public AInventory()
         {
             InitializeComponent();
@@ -35,6 +38,7 @@ namespace InvenTrack.View
            
         }
 
+        // Loading Grids ---------------------------------------------------------------------------------------------------------------------------------------------
         private void LoadGrid(string query)
         {
             try
@@ -73,7 +77,10 @@ namespace InvenTrack.View
             }
             catch (SqlException ex)
             {
-                MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, 
+                    "InvenTrack", 
+                    MessageBoxButton.OK, 
+                    MessageBoxImage.Error);
             }
         }
 
@@ -106,15 +113,21 @@ namespace InvenTrack.View
             priceTextBox.Clear();
         }
 
+        // Conditions ---------------------------------------------------------------------------------------------------------------------------------------------------------
         private bool IsValid()
         {
-            if (string.IsNullOrWhiteSpace(productTextBox.Text) || string.IsNullOrWhiteSpace(categoryTextBox.Text) || string.IsNullOrWhiteSpace(brandTextBox.Text) ||
-                !int.TryParse(stockTextBox.Text, out _) || !decimal.TryParse(priceTextBox.Text, out _))
+            if (string.IsNullOrWhiteSpace(productTextBox.Text) 
+                || string.IsNullOrWhiteSpace(categoryTextBox.Text) 
+                || string.IsNullOrWhiteSpace(brandTextBox.Text) 
+                || !int.TryParse(stockTextBox.Text, out _) 
+                || !decimal.TryParse(priceTextBox.Text, out _))
             {
-                MessageBox.Show("There are missing values or incorrect inputs.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MessageBox.Show("There are missing values or incorrect inputs.", 
+                    "InvenTrack", 
+                    MessageBoxButton.OK, 
+                    MessageBoxImage.Exclamation);
                 return false;
-            }
-            return true;
+            } return true;
         }
 
         private bool ProductExists(string productName)
@@ -129,15 +142,16 @@ namespace InvenTrack.View
             }
             catch (SqlException ex)
             {
-                MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, 
+                    "InvenTrack", 
+                    MessageBoxButton.OK, 
+                    MessageBoxImage.Error);
                 return false;
             }
-            finally
-            {
-                conn.Close();
-            }
+            finally { conn.Close(); }
         }
 
+        // Commands -----------------------------------------------------------------------------------------------------------------------------------------------------------------
         private void btnClearAlerts_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -150,10 +164,14 @@ namespace InvenTrack.View
             }
             catch (SqlException ex)
             {
-                MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, 
+                    "InvenTrack", 
+                    MessageBoxButton.OK, 
+                    MessageBoxImage.Error);
             }
         }
 
+        // CRUD Ops
         private void addBtn_Click(object sender, RoutedEventArgs e)
         {
             if (IsValid())
@@ -161,9 +179,13 @@ namespace InvenTrack.View
                 try
                 {
                     string productName = productTextBox.Text;
+
                     if (ProductExists(productName))
                     {
-                        MessageBox.Show("This item already exists. Use the Update operation.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
+                        MessageBox.Show("This item already exists. Use the Update operation.", 
+                            "InvenTrack", 
+                            MessageBoxButton.OK, 
+                            MessageBoxImage.Information);
                     }
                     else
                     {
@@ -192,7 +214,9 @@ namespace InvenTrack.View
                 }
                 catch (SqlException ex)
                 {
-                    MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, 
+                        "InvenTrack", MessageBoxButton.OK, 
+                        MessageBoxImage.Error);
                 }
             }
         }
@@ -201,12 +225,16 @@ namespace InvenTrack.View
         {
             if (AInventoryDataGrid.SelectedItem != null)
             {
-                if (MessageBox.Show("Are you sure you want to delete the selected item?", "InvenTrack", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                if (MessageBox.Show("Are you sure you want to delete the selected item?", 
+                    "InvenTrack", 
+                    MessageBoxButton.YesNo, 
+                    MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     try
                     {
                         DataRowView selectedRow = (DataRowView)AInventoryDataGrid.SelectedItem;
                         int selectedID = (int)selectedRow["ID"];
+
                         conn.Open();
                         cmd = new SqlCommand($"DELETE FROM Inventory WHERE ID = '{selectedID}'", conn);
                         cmd.ExecuteNonQuery();
@@ -226,13 +254,19 @@ namespace InvenTrack.View
                     }
                     catch (SqlException ex)
                     {
-                        MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show(ex.Message, 
+                            "InvenTrack", 
+                            MessageBoxButton.OK, 
+                            MessageBoxImage.Error);
                     }
                 }
             }
             else
             {
-                MessageBox.Show("Please select a row to delete.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Please select a row to delete.", 
+                    "InvenTrack", 
+                    MessageBoxButton.OK, 
+                    MessageBoxImage.Information);
             }
         }
 
@@ -268,18 +302,21 @@ namespace InvenTrack.View
                         LoadAlertsGrid();
                         ClearData();
                         LoadGrid("SELECT * FROM Inventory");
-
-                        
                     }
                     catch (SqlException ex)
                     {
-                        MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show(ex.Message, 
+                            "InvenTrack", 
+                            MessageBoxButton.OK, 
+                            MessageBoxImage.Error);
                     }
                 }
             }
             else
             {
-                MessageBox.Show("Please select a row to update.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Please select a row to update.", 
+                    "InvenTrack", MessageBoxButton.OK, 
+                    MessageBoxImage.Information);
             }
         }
 
@@ -338,7 +375,9 @@ namespace InvenTrack.View
             }
             catch (SqlException ex)
             {
-                MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, 
+                    "InvenTrack", MessageBoxButton.OK, 
+                    MessageBoxImage.Error);
             }
             finally
             {

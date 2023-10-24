@@ -45,19 +45,5 @@ namespace InvenTrack.ViewModel
         public ICommand DeleteCommand { get; }
         public ICommand ClearCommand { get; }
 
-        public InventoryViewModel()
-        {
-            // Initialize commands and load data
-            // You can define your commands (AddCommand, UpdateCommand, DeleteCommand, ClearCommand) here.
-        }
-
-        // Implement your command logic here.
-        // Example:
-        private void ExecuteAddCommand()
-        {
-            // Add inventory item logic
-        }
-
-        // Implement INotifyPropertyChanged interface
     }
 }

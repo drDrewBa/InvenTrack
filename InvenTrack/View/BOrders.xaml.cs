@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,12 +23,15 @@ namespace InvenTrack.View
     /// </summary>
     public partial class BOrders : UserControl
     {
+
+        // Initializing connections and variables --------------------------------------------------------------------------------------------------------------
         private SqlConnection conn = new SqlConnection(@"Data Source=DESKTOP-QP317C6;Initial Catalog=NathansNutrientNexus;Integrated Security=True");
         private SqlCommand cmd;
         private int id, stock, quantityToTransfer, quantityToReturn, updatedStock;
         private string product;
         private decimal price, totalSum, receivedValue;
 
+        // Constructor
         public BOrders()
         {
             InitializeComponent();
@@ -35,7 +39,7 @@ namespace InvenTrack.View
             LoadOrderGrid();
         }
 
-        // Update DataGrids and views
+        // Update DataGrids and views -----------------------------------------------------------------------------------------------------------------------------
         public void LoadInventoryGrid()
         {
             cmd = new SqlCommand("SELECT ID, Product, Stock, Price FROM Inventory", conn);
@@ -57,6 +61,17 @@ namespace InvenTrack.View
             BInventoryDataGrid.ItemsSource = dt.DefaultView;
         }
 
+        public void LoadOrderGrid()
+        {
+            cmd = new SqlCommand("SELECT Product, Quantity, Price, Total FROM Orders", conn);
+            DataTable dt = new DataTable();
+            conn.Open();
+            SqlDataReader sdr = cmd.ExecuteReader();
+            dt.Load(sdr);
+            conn.Close();
+            BOrderDataGrid.ItemsSource = dt.DefaultView;
+        }
+
         private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
@@ -72,7 +87,7 @@ namespace InvenTrack.View
             }
         }
 
-        // Computing for total
+        // Business logic ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         private decimal CalculateTotal()
         {
             using (SqlConnection conn = new SqlConnection(@"Data Source=DESKTOP-QP317C6;Initial Catalog=NathansNutrientNexus;Integrated Security=True"))
@@ -85,41 +100,30 @@ namespace InvenTrack.View
                 {
                     object result = cmd.ExecuteScalar();
                     if (result != DBNull.Value)
-                    {
-                        return totalSum = Convert.ToDecimal(result);
-                    }
-                    else
-                    {
-                        return (decimal)0.00;
-                    }
+                    { return totalSum = Convert.ToDecimal(result); }
+                    else { return (decimal)0.00; }
                 }
             }
         }
 
-        public void LoadOrderGrid()
-        {
-            cmd = new SqlCommand("SELECT Product, Quantity, Price, Total FROM Orders", conn);
-            DataTable dt = new DataTable();
-            conn.Open();
-            SqlDataReader sdr = cmd.ExecuteReader();
-            dt.Load(sdr);
-            conn.Close();
-            BOrderDataGrid.ItemsSource = dt.DefaultView;
-        }
-
-        // Commands
+        // Commands ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         private void addBtn_Click(object sender, RoutedEventArgs e)
         {
 
             if (BInventoryDataGrid.SelectedItem == null)
             {
-                MessageBox.Show("Select an item.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Select an item.",
+                    "InvenTrack", MessageBoxButton.OK,
+                    MessageBoxImage.Information);
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(qtyTextBox.Text) || !int.TryParse(qtyTextBox.Text, out quantityToTransfer))
+            if (string.IsNullOrWhiteSpace(qtyTextBox.Text)
+                || !int.TryParse(qtyTextBox.Text, out quantityToTransfer))
             {
-                MessageBox.Show("Enter a valid integer for quantity.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Enter a valid integer for quantity.",
+                    "InvenTrack", MessageBoxButton.OK,
+                    MessageBoxImage.Information);
                 return;
             }
 
@@ -132,7 +136,9 @@ namespace InvenTrack.View
 
             if (quantityToTransfer > stock)
             {
-                MessageBox.Show("Quantity to transfer cannot exceed the item's stock in Inventory.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Quantity to transfer cannot exceed the item's stock in Inventory.",
+                    "InvenTrack", MessageBoxButton.OK,
+                    MessageBoxImage.Information);
                 return;
             }
 
@@ -143,6 +149,12 @@ namespace InvenTrack.View
                 conn.Open();
                 cmd.ExecuteNonQuery();
                 conn.Close();
+            }
+
+            using (SqlCommand enableIdentityInsertCmd = new SqlCommand("SET IDENTITY_INSERT Orders ON", conn))
+            {
+                conn.Open();
+                enableIdentityInsertCmd.ExecuteNonQuery();
             }
 
             using (SqlCommand cmd = new SqlCommand(
@@ -159,8 +171,14 @@ namespace InvenTrack.View
                 cmd.Parameters.AddWithValue("@Product", product);
                 cmd.Parameters.AddWithValue("@Quantity", quantityToTransfer);
                 cmd.Parameters.AddWithValue("@Price", price);
+                cmd.ExecuteNonQuery(); // No need to close the connection here
+                conn.Close() ;
+            }
+
+            using (SqlCommand disableIdentityInsertCmd = new SqlCommand("SET IDENTITY_INSERT Orders OFF", conn))
+            {
                 conn.Open();
-                cmd.ExecuteNonQuery();
+                disableIdentityInsertCmd.ExecuteNonQuery();
                 conn.Close();
             }
 
@@ -173,7 +191,9 @@ namespace InvenTrack.View
         {
             if (BOrderDataGrid.SelectedItem == null)
             {
-                MessageBox.Show("Select an item to return.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Select an item to return.",
+                    "InvenTrack", MessageBoxButton.OK,
+                    MessageBoxImage.Information);
                 return;
             }
 
@@ -207,25 +227,26 @@ namespace InvenTrack.View
         {
             if (BOrderDataGrid.Items.Count == 1)
             {
-                MessageBox.Show("Order is empty.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Order is empty.",
+                    "InvenTrack", MessageBoxButton.OK,
+                    MessageBoxImage.Information);
                 return;
             }
 
-            MessageBoxResult result = MessageBox.Show("Are you sure you want to cancel the order?", "InvenTrack", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to cancel the order?",
+                "InvenTrack", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.No)
-            {
-                return; // User chose not to cancel the order
-            }
+            { return; }
 
             conn.Open();
 
-            DataView orderDataView = (DataView)BOrderDataGrid.ItemsSource; // Cast to DataView
-            DataTable orderDataTable = orderDataView.Table; // Get the underlying DataTable
+            DataView orderDataView = (DataView)BOrderDataGrid.ItemsSource;
+            DataTable orderDataTable = orderDataView.Table;
 
             while (orderDataTable.Rows.Count > 0)
             {
-                DataRowView selectedRow = orderDataView[0]; // Get the first row as a DataRowView
+                DataRowView selectedRow = orderDataView[0];
 
                 product = selectedRow["Product"].ToString();
                 quantityToReturn = int.Parse(selectedRow["Quantity"].ToString());
@@ -243,38 +264,110 @@ namespace InvenTrack.View
                     cmd.ExecuteNonQuery();
                 }
 
-                // Remove the processed row from the DataTable
                 orderDataTable.Rows.Remove(selectedRow.Row);
             }
 
             conn.Close();
 
-            MessageBox.Show("Orders has been canceled.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("Orders has been canceled.",
+                "InvenTrack", MessageBoxButton.OK,
+                MessageBoxImage.Information);
             totalTxt.Text = "0.00";
             LoadInventoryGrid();
             LoadOrderGrid();
         }
 
+        // Complete the Order -----------------------------------------------------------------
+        private void ExportOrdersToCSV(string filePath)
+        {
+            using (SqlConnection conn = new SqlConnection(@"Data Source=DESKTOP-QP317C6;Initial Catalog=NathansNutrientNexus;Integrated Security=True"))
+            {
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand("SELECT * FROM Orders", conn))
+                {
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                    {
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+
+                        StringBuilder csvContent = new StringBuilder();
+                        IEnumerable<string> columnNames = dataTable.Columns.Cast<DataColumn>().Select(column => column.ColumnName);
+                        csvContent.AppendLine(string.Join(",", columnNames));
+
+                        foreach (DataRow row in dataTable.Rows)
+                        {
+                            IEnumerable<string> fields = row.ItemArray.Select(field => field.ToString());
+                            csvContent.AppendLine(string.Join(",", fields));
+                        }
+
+                        File.WriteAllText(filePath, csvContent.ToString());
+                    }
+                }
+                conn.Close();
+            }
+        }
+
         private void completeBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(receivedTextBox.Text) || !decimal.TryParse(receivedTextBox.Text, out receivedValue))
+            if (string.IsNullOrWhiteSpace(receivedTextBox.Text)
+                || !decimal.TryParse(receivedTextBox.Text, out receivedValue))
             {
-                MessageBox.Show("Enter a valid decimal for received amount.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Enter a valid decimal for the received amount.",
+                    "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
             decimal totalAmount = CalculateTotal();
+
+            if (receivedValue < totalAmount)
+            {
+                MessageBox.Show("Received amount is less than the total amount. Please enter a sufficient amount.",
+                    "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             decimal change = receivedValue - totalAmount;
 
-            using (SqlCommand cmd = new SqlCommand("DELETE FROM Orders", conn))
+            // Increment TotalSales in the database
+            using (SqlConnection conn = new SqlConnection(@"Data Source=DESKTOP-QP317C6;Initial Catalog=NathansNutrientNexus;Integrated Security=True"))
             {
                 conn.Open();
-                cmd.ExecuteNonQuery();
+
+                string updateQuery = "UPDATE Sales SET TotalSales = TotalSales + @totalAmount WHERE OrderDate = @currentDate";
+                using (SqlCommand cmd = new SqlCommand(updateQuery, conn))
+                {
+                    cmd.Parameters.AddWithValue("@totalAmount", totalAmount);
+                    cmd.Parameters.AddWithValue("@currentDate", DateTime.Now.Date);
+                    cmd.ExecuteNonQuery();
+                }
+
+                string currentDirectory = Environment.CurrentDirectory;
+
+                string savedFolderPath = System.IO.Path.Combine(currentDirectory, "Saved");
+                Directory.CreateDirectory(savedFolderPath);
+                string fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + ".csv";
+                string exportFilePath = System.IO.Path.Combine(savedFolderPath, fileName);
+                ExportOrdersToCSV(exportFilePath);
+
+                MessageBox.Show("This order has been saved");
+
+                // Clear the Orders table
+                using (SqlCommand cmd = new SqlCommand("DELETE FROM Orders", conn))
+                {
+                    cmd.ExecuteNonQuery();
+                }
+
+                // Insert an audit record
+                using (SqlCommand cmd = new SqlCommand("INSERT INTO Audit (auditDate, message) VALUES(@auditDate, @message)", conn))
+                {
+                    cmd.Parameters.AddWithValue("@auditDate", DateTime.Now);
+                    cmd.Parameters.AddWithValue("@message", "An order has been completed.");
+                    cmd.ExecuteNonQuery();
+                }
                 conn.Close();
             }
 
             changeTxt.Text = change.ToString("0.00");
-
             LoadOrderGrid();
         }
     }

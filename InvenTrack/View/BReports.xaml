@@ -4,9 +4,221 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:InvenTrack.View"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Aquamarine">
-            
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="6*" />
+            <ColumnDefinition Width="4*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Border Background="White"
+                    CornerRadius="10"
+                    Margin="5">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock FontFamily="Montserrat"
+                               FontWeight="Bold"
+                               FontSize="20"
+                               Foreground="Black"
+                               Padding="10 0 0 0"
+                               VerticalAlignment="Center"
+                               Text="Distribution" />
+
+                    <lvc:PieChart x:Name="pieChart"
+                                  LegendLocation="Left"
+                                  DataTooltip="{x:Null}"
+                                  Margin="50 5 50 5"
+                                  Grid.Row="1">
+                    </lvc:PieChart>
+                </Grid>
+
+            </Border>
+
+            <Border Background="White"
+                    CornerRadius="10"
+                    Grid.Row="1"
+                    Margin="5">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock FontFamily="Montserrat"
+                               FontWeight="Bold"
+                               FontSize="20"
+                               Foreground="Black"
+                               Padding="10 0 0 0"
+                               VerticalAlignment="Center"
+                               Text="Sales" />
+
+                    <lvc:CartesianChart x:Name="salesChart"
+                                        Grid.Column="1"
+                                        LegendLocation="Right"
+                                        Hoverable="True"
+                                        Grid.Row="1"
+                                        DataTooltip="{x:Null}"
+                                        Margin="50 5 50 5">
+                        <lvc:CartesianChart.Series>
+                            <lvc:LineSeries Title="Total Sales"
+                                            Values="{Binding TotalSales}"
+                                            LineSmoothness="0.0"
+                                            DataLabels="False"
+                                            Configuration="{Binding LineSeriesConfig}">
+                            </lvc:LineSeries>
+                        </lvc:CartesianChart.Series>
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Title="OrdersDate"
+                                      Labels="{Binding OrdersDateLabels}"
+                                      IsMerged="True">
+                                <!-- Set IsMerged to true to hide X-axis labels -->
+                            </lvc:Axis>
+                        </lvc:CartesianChart.AxisX>
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis Title="Total Sales"
+                                      LabelFormatter="{Binding TotalSalesLabelFormatter}" />
+                        </lvc:CartesianChart.AxisY>
+                    </lvc:CartesianChart>
+
+                </Grid>
+
+            </Border>
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Grid Panel.ZIndex="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="8*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="btnClearAlerts"
+                        BorderThickness="0"
+                        Content=" X "
+                        Foreground="Black"
+                        FontSize="20"
+                        FontFamily="Montserrat"
+                        Cursor="Hand"
+                        Grid.Column="1"
+                        Click="btnClearAlerts_Click"
+                        Margin="0 0 5 0">
+
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background"
+                                    Value="White" />
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver"
+                                         Value="True">
+                                    <Setter Property="Background"
+                                            Value="LightGray" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Width="25"
+                                    Height="25"
+                                    CornerRadius="7"
+                                    Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+
+                </Button>
+            </Grid>
+
+            <Border CornerRadius="5 5 0 0"
+                    Margin="5 5 5 0">
+
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0"
+                                         EndPoint="1,0">
+                        <GradientStop Color="{StaticResource color2}"
+                                      Offset="0" />
+                        <GradientStop Color="{StaticResource color5}"
+                                      Offset="1" />
+                    </LinearGradientBrush>
+                </Border.Background>
+
+                <TextBlock FontFamily="Montserrat"
+                           FontWeight="Bold"
+                           FontSize="20"
+                           Foreground="Black"
+                           Padding="10 0 0 0"
+                           VerticalAlignment="Center"
+                           Text="Audit Trail" />
+            </Border>
+
+            <Border Background="White"
+                    Grid.Row="1"
+                    CornerRadius="0 0 5 5"
+                    Margin="5 0 5 5">
+
+                <DataGrid x:Name="BReportsDataGrid"
+                          AutoGenerateColumns="False"
+                          Grid.Row="1"
+                          FontSize="12"
+                          HeadersVisibility="None"
+                          IsReadOnly="True"
+                          RowHeight="40"
+                          FontFamily="Montserrat"
+                          FontWeight="Light"
+                          CanUserResizeColumns="False"
+                          CanUserResizeRows="False"
+                          BorderThickness="0"
+                          Margin="5"
+                          Background="Transparent"
+                          GridLinesVisibility="None">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Alert Date"
+                                            Width="120"
+                                            Binding="{Binding auditDate, StringFormat=d}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextWrapping"
+                                            Value="Wrap" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Message"
+                                            Width="230"
+                                            Binding="{Binding message}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextWrapping"
+                                            Value="Wrap" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

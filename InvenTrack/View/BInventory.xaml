@@ -165,7 +165,7 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Alert DateTime"
                                                 Width="70"
-                                                Binding="{Binding AlertDateTime}">
+                                                Binding="{Binding AlertDateTime, StringFormat=d}">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style>
                                         <Setter Property="TextBlock.TextWrapping"

@@ -22,12 +22,13 @@ namespace InvenTrack.View
     /// </summary>
     public partial class InventoryA : Window
     {
+        // Initialize View ---------------------------------------------------------------------------------------------------------------------------------------------------------------
         public InventoryA()
         {
             InitializeComponent();
-            
         }
 
+        // Commands ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
         [DllImport("user32.dll")]
         public static extern IPInterfaceProperties SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
 
@@ -52,6 +53,7 @@ namespace InvenTrack.View
             WindowState = WindowState.Minimized;
         }
 
+        // Switching between child views -------------------------------------------------------------------------------------------------------------------------------------------------
         private void RadioButton_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("Are you sure you want to sign out?", "InvenTrack", MessageBoxButton.YesNo, MessageBoxImage.Question);

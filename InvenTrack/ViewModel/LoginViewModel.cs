@@ -77,16 +77,12 @@ namespace InvenTrack.ViewModel
 
         //Commands
         public ICommand LoginCommand { get; }
-        public ICommand RecoverPasswordCommand { get; }
-        public ICommand ShowPasswordCommand { get; }
-        public ICommand RememberPasswordCommand { get; }
 
         //Constructor
         public LoginViewModel()
         {
             userRepository = new UserRepository();
             LoginCommand = new ViewModelCommand(ExecuteLoginCommand, CanExecuteLoginCommand);
-            RecoverPasswordCommand = new ViewModelCommand(p => ExecuteRecoverPassCommand("", ""));
         }
 
         private void ExecuteRecoverPassCommand(string username, string pass)

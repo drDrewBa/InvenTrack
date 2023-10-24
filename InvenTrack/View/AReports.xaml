@@ -73,17 +73,22 @@
                                         LegendLocation="Right"
                                         Hoverable="True"
                                         Grid.Row="1"
+                                        DataTooltip="{x:Null}"
                                         Margin="50 5 50 5">
                         <lvc:CartesianChart.Series>
                             <lvc:LineSeries Title="Total Sales"
                                             Values="{Binding TotalSales}"
                                             LineSmoothness="0.0"
-                                            DataLabels="False">
+                                            DataLabels="False"
+                                            Configuration="{Binding LineSeriesConfig}">
                             </lvc:LineSeries>
                         </lvc:CartesianChart.Series>
                         <lvc:CartesianChart.AxisX>
                             <lvc:Axis Title="OrdersDate"
-                                      Labels="{Binding OrdersDateLabels}" />
+                                      Labels="{Binding OrdersDateLabels}"
+                                      IsMerged="True">
+                                <!-- Set IsMerged to true to hide X-axis labels -->
+                            </lvc:Axis>
                         </lvc:CartesianChart.AxisX>
                         <lvc:CartesianChart.AxisY>
                             <lvc:Axis Title="Total Sales"

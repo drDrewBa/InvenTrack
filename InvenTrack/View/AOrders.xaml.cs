@@ -25,12 +25,15 @@ namespace InvenTrack.View
     /// </summary>
     public partial class AOrders : UserControl
     {
+
+        // Initializing connections and variables --------------------------------------------------------------------------------------------------------------
         private SqlConnection conn = new SqlConnection(@"Data Source=DESKTOP-QP317C6;Initial Catalog=JaensGadgetGarage;Integrated Security=True");
         private SqlCommand cmd;
         private int id, stock, quantityToTransfer, quantityToReturn, updatedStock;
         private string product;
         private decimal price, totalSum, receivedValue;
 
+        // Constructor
         public AOrders()
         {
             InitializeComponent();
@@ -38,7 +41,7 @@ namespace InvenTrack.View
             LoadOrderGrid();
         }
 
-        // Update DataGrids and views
+        // Update DataGrids and views -----------------------------------------------------------------------------------------------------------------------------
         public void LoadInventoryGrid()
         {
             cmd = new SqlCommand("SELECT ID, Product, Stock, Price FROM Inventory", conn);
@@ -60,6 +63,17 @@ namespace InvenTrack.View
             AInventoryDataGrid.ItemsSource = dt.DefaultView;
         }
 
+        public void LoadOrderGrid()
+        {
+            cmd = new SqlCommand("SELECT Product, Quantity, Price, Total FROM Orders", conn);
+            DataTable dt = new DataTable();
+            conn.Open();
+            SqlDataReader sdr = cmd.ExecuteReader();
+            dt.Load(sdr);
+            conn.Close();
+            AOrderDataGrid.ItemsSource = dt.DefaultView;
+        }
+
         private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
@@ -74,8 +88,8 @@ namespace InvenTrack.View
                 LoadInventoryGrid(cmd);
             }
         }
-
-        // Computing for total
+        
+        // Business logic ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         private decimal CalculateTotal()
         {
             using (SqlConnection conn = new SqlConnection(@"Data Source=DESKTOP-QP317C6;Initial Catalog=JaensGadgetGarage;Integrated Security=True"))
@@ -88,41 +102,30 @@ namespace InvenTrack.View
                 {
                     object result = cmd.ExecuteScalar();
                     if (result != DBNull.Value)
-                    {
-                        return totalSum = Convert.ToDecimal(result);
-                    }
-                    else
-                    {
-                        return (decimal) 0.00; 
-                    }
+                    { return totalSum = Convert.ToDecimal(result); }
+                    else { return (decimal) 0.00; }
                 }
             }
         }
 
-        public void LoadOrderGrid()
-        {
-            cmd = new SqlCommand("SELECT Product, Quantity, Price, Total FROM Orders", conn);
-            DataTable dt = new DataTable();
-            conn.Open();
-            SqlDataReader sdr = cmd.ExecuteReader();
-            dt.Load(sdr);
-            conn.Close();
-            AOrderDataGrid.ItemsSource = dt.DefaultView;
-        }
-
-        // Commands
+        // Commands ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         private void addBtn_Click(object sender, RoutedEventArgs e)
         {
 
             if (AInventoryDataGrid.SelectedItem == null)
             {
-                MessageBox.Show("Select an item.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Select an item.", 
+                    "InvenTrack", MessageBoxButton.OK, 
+                    MessageBoxImage.Information);
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(qtyTextBox.Text) || !int.TryParse(qtyTextBox.Text, out quantityToTransfer))
+            if (string.IsNullOrWhiteSpace(qtyTextBox.Text) 
+                || !int.TryParse(qtyTextBox.Text, out quantityToTransfer))
             {
-                MessageBox.Show("Enter a valid integer for quantity.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Enter a valid integer for quantity.", 
+                    "InvenTrack", MessageBoxButton.OK, 
+                    MessageBoxImage.Information);
                 return;
             }
 
@@ -135,7 +138,9 @@ namespace InvenTrack.View
 
             if (quantityToTransfer > stock)
             {
-                MessageBox.Show("Quantity to transfer cannot exceed the item's stock in Inventory.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Quantity to transfer cannot exceed the item's stock in Inventory.", 
+                    "InvenTrack", MessageBoxButton.OK, 
+                    MessageBoxImage.Information);
                 return;
             }
 
@@ -176,7 +181,9 @@ namespace InvenTrack.View
         {
             if (AOrderDataGrid.SelectedItem == null)
             {
-                MessageBox.Show("Select an item to return.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Select an item to return.", 
+                    "InvenTrack", MessageBoxButton.OK, 
+                    MessageBoxImage.Information);
                 return;
             }
 
@@ -210,25 +217,26 @@ namespace InvenTrack.View
         {
             if (AOrderDataGrid.Items.Count == 1)
             {
-                MessageBox.Show("Order is empty.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Order is empty.", 
+                    "InvenTrack", MessageBoxButton.OK, 
+                    MessageBoxImage.Information);
                 return;
             }
 
-            MessageBoxResult result = MessageBox.Show("Are you sure you want to cancel the order?", "InvenTrack", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to cancel the order?", 
+                "InvenTrack", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.No)
-            {
-                return; // User chose not to cancel the order
-            }
+            { return; }
 
             conn.Open();
 
-            DataView orderDataView = (DataView)AOrderDataGrid.ItemsSource; // Cast to DataView
-            DataTable orderDataTable = orderDataView.Table; // Get the underlying DataTable
+            DataView orderDataView = (DataView)AOrderDataGrid.ItemsSource;
+            DataTable orderDataTable = orderDataView.Table;
 
             while (orderDataTable.Rows.Count > 0)
             {
-                DataRowView selectedRow = orderDataView[0]; // Get the first row as a DataRowView
+                DataRowView selectedRow = orderDataView[0];
 
                 product = selectedRow["Product"].ToString();
                 quantityToReturn = int.Parse(selectedRow["Quantity"].ToString());
@@ -246,20 +254,20 @@ namespace InvenTrack.View
                     cmd.ExecuteNonQuery();
                 }
 
-                // Remove the processed row from the DataTable
                 orderDataTable.Rows.Remove(selectedRow.Row);
             }
 
             conn.Close();
 
-            MessageBox.Show("Orders has been canceled.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("Orders has been canceled.", 
+                "InvenTrack", MessageBoxButton.OK, 
+                MessageBoxImage.Information);
             totalTxt.Text = "0.00";
             LoadInventoryGrid();
             LoadOrderGrid();
         }
 
         // Complete the Order -----------------------------------------------------------------
-
         private void ExportOrdersToCSV(string filePath)
         {
             using (SqlConnection conn = new SqlConnection(@"Data Source=DESKTOP-QP317C6;Initial Catalog=JaensGadgetGarage;Integrated Security=True"))
@@ -291,9 +299,11 @@ namespace InvenTrack.View
 
         private void completeBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(receivedTextBox.Text) || !decimal.TryParse(receivedTextBox.Text, out receivedValue))
+            if (string.IsNullOrWhiteSpace(receivedTextBox.Text) 
+                || !decimal.TryParse(receivedTextBox.Text, out receivedValue))
             {
-                MessageBox.Show("Enter a valid decimal for the received amount.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Enter a valid decimal for the received amount.", 
+                    "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
@@ -301,7 +311,8 @@ namespace InvenTrack.View
 
             if (receivedValue < totalAmount)
             {
-                MessageBox.Show("Received amount is less than the total amount. Please enter a sufficient amount.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Received amount is less than the total amount. Please enter a sufficient amount.", 
+                    "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -312,12 +323,11 @@ namespace InvenTrack.View
             {
                 conn.Open();
 
-                // Update TotalSales based on the current date
                 string updateQuery = "UPDATE Sales SET TotalSales = TotalSales + @totalAmount WHERE OrdersDate = @currentDate";
                 using (SqlCommand cmd = new SqlCommand(updateQuery, conn))
                 {
                     cmd.Parameters.AddWithValue("@totalAmount", totalAmount);
-                    cmd.Parameters.AddWithValue("@currentDate", DateTime.Now.Date); // Use Date property to ignore the time part
+                    cmd.Parameters.AddWithValue("@currentDate", DateTime.Now.Date);
                     cmd.ExecuteNonQuery();
                 }
 
@@ -343,10 +353,7 @@ namespace InvenTrack.View
                     cmd.Parameters.AddWithValue("@auditDate", DateTime.Now);
                     cmd.Parameters.AddWithValue("@message", "An order has been completed.");
                     cmd.ExecuteNonQuery();
-                }
-
-                conn.Close();
-            }
+                } conn.Close(); }
 
             changeTxt.Text = change.ToString("0.00");
 

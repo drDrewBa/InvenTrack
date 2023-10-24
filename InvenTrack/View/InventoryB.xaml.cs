@@ -19,11 +19,13 @@ namespace InvenTrack.View
     /// </summary>
     public partial class InventoryB : Window
     {
+        // Initialize the view ----------------------------------------------------------------------------------------------------------------------------------------------------
         public InventoryB()
         {
             InitializeComponent();
         }
 
+        // Commands -----------------------------------------------------------------------------------------------------------------------------------------------------------------
         private void btnMinimize_Click(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
@@ -34,6 +36,7 @@ namespace InvenTrack.View
             Application.Current.Shutdown();
         }
 
+        // Switching between child views ---------------------------------------------------------------------------------------------------------------------------------------------
         private void RadioButton_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("Are you sure you want to sign out?", "InvenTrack", MessageBoxButton.YesNo, MessageBoxImage.Question);
