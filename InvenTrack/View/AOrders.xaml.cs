@@ -298,33 +298,55 @@ namespace InvenTrack.View
             }
 
             decimal totalAmount = CalculateTotal();
+
+            if (receivedValue < totalAmount)
+            {
+                MessageBox.Show("Received amount is less than the total amount. Please enter a sufficient amount.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             decimal change = receivedValue - totalAmount;
 
-            string currentDirectory = Environment.CurrentDirectory;
-
-            string savedFolderPath = System.IO.Path.Combine(currentDirectory, "Saved");
-            Directory.CreateDirectory(savedFolderPath);
-            string fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + ".csv";
-            string exportFilePath = System.IO.Path.Combine(savedFolderPath, fileName);
-            ExportOrdersToCSV(exportFilePath);
-
-            MessageBox.Show("This order has been saved");
+            // Increment TotalSales in the database
             using (SqlConnection conn = new SqlConnection(@"Data Source=DESKTOP-QP317C6;Initial Catalog=JaensGadgetGarage;Integrated Security=True"))
             {
                 conn.Open();
+
+                // Update TotalSales based on the current date
+                string updateQuery = "UPDATE Sales SET TotalSales = TotalSales + @totalAmount WHERE OrdersDate = @currentDate";
+                using (SqlCommand cmd = new SqlCommand(updateQuery, conn))
+                {
+                    cmd.Parameters.AddWithValue("@totalAmount", totalAmount);
+                    cmd.Parameters.AddWithValue("@currentDate", DateTime.Now.Date); // Use Date property to ignore the time part
+                    cmd.ExecuteNonQuery();
+                }
+
+                string currentDirectory = Environment.CurrentDirectory;
+
+                string savedFolderPath = System.IO.Path.Combine(currentDirectory, "Saved");
+                Directory.CreateDirectory(savedFolderPath);
+                string fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + ".csv";
+                string exportFilePath = System.IO.Path.Combine(savedFolderPath, fileName);
+                ExportOrdersToCSV(exportFilePath);
+
+                MessageBox.Show("This order has been saved");
+
+                // Clear the Orders table
                 using (SqlCommand cmd = new SqlCommand("DELETE FROM Orders", conn))
                 {
                     cmd.ExecuteNonQuery();
                 }
+
+                // Insert an audit record
+                using (SqlCommand cmd = new SqlCommand("INSERT INTO Audit (auditDate, message) VALUES(@auditDate, @message)", conn))
+                {
+                    cmd.Parameters.AddWithValue("@auditDate", DateTime.Now);
+                    cmd.Parameters.AddWithValue("@message", "An order has been completed.");
+                    cmd.ExecuteNonQuery();
+                }
+
                 conn.Close();
             }
-
-            cmd = new SqlCommand("INSERT INTO Audit (auditDate, message) VALUES(@auditDate, @message)", conn);
-            cmd.Parameters.AddWithValue("@auditDate", DateTime.Now);
-            cmd.Parameters.AddWithValue("@message", "An order has been completed.");
-            conn.Open();
-            cmd.ExecuteNonQuery();
-            conn.Close();
 
             changeTxt.Text = change.ToString("0.00");
 

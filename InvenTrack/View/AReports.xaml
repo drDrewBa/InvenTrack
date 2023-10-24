@@ -21,16 +21,79 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <lvc:PieChart>
-                <lvc:PieChart.Series>
-                    <lvc:PieSeries Title="Placeholder"
-                                   Values="3"
-                                   DataLabels="True"
-                                   LabelPoint="{Binding PointLabel}">
-                        
-                    </lvc:PieSeries>
-                </lvc:PieChart.Series>
-            </lvc:PieChart>
+            <Border Background="White"
+                    CornerRadius="10"
+                    Margin="5">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock FontFamily="Montserrat"
+                               FontWeight="Bold"
+                               FontSize="20"
+                               Foreground="Black"
+                               Padding="10 0 0 0"
+                               VerticalAlignment="Center"
+                               Text="Distribution" />
+
+                    <lvc:PieChart x:Name="pieChart"
+                                  LegendLocation="Left"
+                                  DataTooltip="{x:Null}"
+                                  Margin="50 5 50 5"
+                                  Grid.Row="1">
+                    </lvc:PieChart>
+                </Grid>
+
+            </Border>
+
+            <Border Background="White"
+                    CornerRadius="10"
+                    Grid.Row="1"
+                    Margin="5">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock FontFamily="Montserrat"
+                               FontWeight="Bold"
+                               FontSize="20"
+                               Foreground="Black"
+                               Padding="10 0 0 0"
+                               VerticalAlignment="Center"
+                               Text="Sales" />
+
+                    <lvc:CartesianChart x:Name="salesChart"
+                                        Grid.Column="1"
+                                        LegendLocation="Right"
+                                        Hoverable="True"
+                                        Grid.Row="1"
+                                        Margin="50 5 50 5">
+                        <lvc:CartesianChart.Series>
+                            <lvc:LineSeries Title="Total Sales"
+                                            Values="{Binding TotalSales}"
+                                            LineSmoothness="0.0"
+                                            DataLabels="False">
+                            </lvc:LineSeries>
+                        </lvc:CartesianChart.Series>
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Title="OrdersDate"
+                                      Labels="{Binding OrdersDateLabels}" />
+                        </lvc:CartesianChart.AxisX>
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis Title="Total Sales"
+                                      LabelFormatter="{Binding TotalSalesLabelFormatter}" />
+                        </lvc:CartesianChart.AxisY>
+                    </lvc:CartesianChart>
+
+                </Grid>
+
+            </Border>
         </Grid>
 
         <Grid Grid.Column="1">

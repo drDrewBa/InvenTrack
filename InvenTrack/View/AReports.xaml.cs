@@ -14,6 +14,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using InvenTrack.Model;
+using LiveCharts.Wpf;
+using LiveCharts;
 
 namespace InvenTrack.View
 {
@@ -26,11 +29,21 @@ namespace InvenTrack.View
         private SqlCommand cmd;
         private string connectionString = @"Data Source=DESKTOP-QP317C6;Initial Catalog=JaensGadgetGarage;Integrated Security=True";
 
+        public Func<ChartPoint, string> PointLabel { get; set; }
+
         public AReports()
         {
             InitializeComponent();
             conn = new SqlConnection(connectionString);
+
+            PointLabel = chartPoint =>
+                string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);
+
             LoadAuditGrid();
+            LoadPie();
+            LoadSalesChart();
+
+            DataContext = this;
         }
 
         private void LoadAuditGrid()
@@ -53,6 +66,113 @@ namespace InvenTrack.View
             }
         }
 
+        private void Chart_OnDataClick(object sender, ChartPoint chartpoint)
+        {
+            var chart = (LiveCharts.Wpf.PieChart)chartpoint.ChartView;
+
+            //clear selected slice.
+            foreach (PieSeries series in chart.Series)
+                series.PushOut = 0;
+
+            var selectedSeries = (PieSeries)chartpoint.SeriesView;
+            selectedSeries.PushOut = 8;
+        }
+
+        private void LoadPie()
+        {
+            try
+            {
+                conn.Open();
+
+                cmd = new SqlCommand("SELECT Product, Stock FROM Inventory", conn);
+                DataTable dt = new DataTable();
+                SqlDataReader sdr = cmd.ExecuteReader();
+                dt.Load(sdr);
+                conn.Close();
+
+                var seriesCollection = new SeriesCollection();
+                var totalStock = dt.AsEnumerable().Sum(row => row.Field<int>("Stock"));
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    var product = row["Product"].ToString();
+                    var stock = Convert.ToDouble(row["Stock"]);
+                    double stockPercentage = (stock / totalStock) * 100;
+
+                    var pieSeries = new PieSeries
+                    {
+                        Title = product, // Display the product name in the legend
+                        Values = new ChartValues<double> { stockPercentage },
+                        DataLabels = true, // Display data labels
+                        LabelPoint = point => $"{stockPercentage:F2}%" // Show only the percentage in data labels
+                    };
+
+                    // Add the current PieSeries to the SeriesCollection
+                    seriesCollection.Add(pieSeries);
+                }
+
+                // Bind the SeriesCollection to the PieChart
+                pieChart.Series = seriesCollection;
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void LoadSalesChart()
+        {
+            try
+            {
+                conn.Open();
+                cmd = new SqlCommand("SELECT OrdersDate, TotalSales FROM Sales ORDER BY OrdersDate", conn);
+                DataTable dt = new DataTable();
+                SqlDataReader sdr = cmd.ExecuteReader();
+                dt.Load(sdr);
+                conn.Close();
+
+                // Create a new SeriesCollection for the chart
+                var seriesCollection = new SeriesCollection();
+
+                // Create a LineSeries for displaying TotalSales data
+                var lineSeries = new LineSeries
+                {
+                    Title = "TotalSales",
+                    Values = new ChartValues<double>(),
+                    PointGeometry = DefaultGeometries.Circle, // Customize point shape
+                    PointGeometrySize = 15, // Customize point size
+                };
+
+                // Add data points to the LineSeries
+                foreach (DataRow row in dt.Rows)
+                {
+                    var ordersDate = Convert.ToDateTime(row["OrdersDate"]);
+                    var totalSales = Convert.ToDouble(row["TotalSales"]);
+
+                    // Add data points to the LineSeries
+                    lineSeries.Values.Add(totalSales);
+                }
+
+                // Set the X-axis values to the date values
+                var xValues = dt.AsEnumerable().Select(row => Convert.ToDateTime(row["OrdersDate"])).ToList();
+                salesChart.AxisX.Add(new Axis
+                {
+                    Title = "OrdersDate",
+                    Labels = xValues.Select(date => date.ToString("yyyy-MM-dd")).ToList()
+                });
+
+                // Add the LineSeries to the SeriesCollection
+                seriesCollection.Add(lineSeries);
+
+                // Bind the SeriesCollection to the chart
+                salesChart.Series = seriesCollection;
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void btnClearAlerts_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -61,7 +181,7 @@ namespace InvenTrack.View
                 cmd = new SqlCommand("DELETE FROM Audit", conn);
                 cmd.ExecuteNonQuery();
                 conn.Close();
-                LoadAuditGrid();
+                LoadPie();
             }
             catch (SqlException ex)
             {
