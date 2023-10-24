@@ -27,6 +27,7 @@ namespace InvenTrack.View
         private SqlCommand cmd;
         private string selectedPhone, selectedName, selectedCompany;
         private string imageURL = "https://i.pinimg.com/564x/9e/83/75/9e837528f01cf3f42119c5aeeed1b336.jpg";
+
         public ASuppliers()
         {
             InitializeComponent();

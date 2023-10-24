@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,9 +22,51 @@ namespace InvenTrack.View
     /// </summary>
     public partial class AReports : UserControl
     {
+        private readonly SqlConnection conn;
+        private SqlCommand cmd;
+        private string connectionString = @"Data Source=DESKTOP-QP317C6;Initial Catalog=JaensGadgetGarage;Integrated Security=True";
+
         public AReports()
         {
             InitializeComponent();
+            conn = new SqlConnection(connectionString);
+            LoadAuditGrid();
+        }
+
+        private void LoadAuditGrid()
+        {
+            try
+            {
+                conn.Open();
+
+                cmd = new SqlCommand("SELECT * FROM Audit", conn);
+                DataTable dt = new DataTable();
+                SqlDataReader sdr = cmd.ExecuteReader();
+                dt.Load(sdr);
+                conn.Close();
+
+                AReportsDataGrid.ItemsSource = dt.DefaultView;
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void btnClearAlerts_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                conn.Open();
+                cmd = new SqlCommand("DELETE FROM Audit", conn);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                LoadAuditGrid();
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.Message, "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

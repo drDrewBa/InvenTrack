@@ -75,6 +75,7 @@
       <DependentUpon>BindablePasswordBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\AlertsModel.cs" />
+    <Compile Include="Model\AuditModel.cs" />
     <Compile Include="Model\ContactModel.cs" />
     <Compile Include="Model\InventoryItemModel.cs" />
     <Compile Include="Model\IUserRepository.cs" />
@@ -275,9 +276,7 @@
     <Resource Include="Images\Jaen%27s Gadget Garage.jpg" />
     <Resource Include="Images\Nathan%27s Nutrient Nexus.jpg" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Receipts\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -176,6 +176,14 @@ namespace InvenTrack.View
                         conn.Open();
                         cmd.ExecuteNonQuery();
                         conn.Close();
+
+                        cmd = new SqlCommand("INSERT INTO Audit (auditDate, message) VALUES(@auditDate, @message)", conn);
+                        cmd.Parameters.AddWithValue("@auditDate", DateTime.Now);
+                        cmd.Parameters.AddWithValue("@message", $"{productTextBox.Text} has been added to inventory.");
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
+
                         CheckLowStock();
                         LoadAlertsGrid();
                         LoadGrid("SELECT * FROM Inventory");
@@ -203,6 +211,14 @@ namespace InvenTrack.View
                         cmd = new SqlCommand($"DELETE FROM Inventory WHERE ID = '{selectedID}'", conn);
                         cmd.ExecuteNonQuery();
                         conn.Close();
+
+                        cmd = new SqlCommand("INSERT INTO Audit (auditDate, message) VALUES(@auditDate, @message)", conn);
+                        cmd.Parameters.AddWithValue("@auditDate", DateTime.Now);
+                        cmd.Parameters.AddWithValue("@message", $"{productTextBox.Text} has been deleted from inventory.");
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
+
                         CheckLowStock();
                         LoadAlertsGrid();
                         ClearData();
@@ -240,10 +256,20 @@ namespace InvenTrack.View
                         conn.Open();
                         cmd.ExecuteNonQuery();
                         conn.Close();
+
+                        cmd = new SqlCommand("INSERT INTO Audit (auditDate, message) VALUES(@auditDate, @message)", conn);
+                        cmd.Parameters.AddWithValue("@auditDate", DateTime.Now);
+                        cmd.Parameters.AddWithValue("@message", $"{productTextBox.Text} has been updated.");
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
+
                         CheckLowStock();
                         LoadAlertsGrid();
                         ClearData();
                         LoadGrid("SELECT * FROM Inventory");
+
+                        
                     }
                     catch (SqlException ex)
                     {

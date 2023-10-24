@@ -258,23 +258,73 @@ namespace InvenTrack.View
             LoadOrderGrid();
         }
 
+        // Complete the Order -----------------------------------------------------------------
+
+        private void ExportOrdersToCSV(string filePath)
+        {
+            using (SqlConnection conn = new SqlConnection(@"Data Source=DESKTOP-QP317C6;Initial Catalog=JaensGadgetGarage;Integrated Security=True"))
+            {
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand("SELECT * FROM Orders", conn))
+                {
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                    {
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+
+                        StringBuilder csvContent = new StringBuilder();
+                        IEnumerable<string> columnNames = dataTable.Columns.Cast<DataColumn>().Select(column => column.ColumnName);
+                        csvContent.AppendLine(string.Join(",", columnNames));
+
+                        foreach (DataRow row in dataTable.Rows)
+                        {
+                            IEnumerable<string> fields = row.ItemArray.Select(field => field.ToString());
+                            csvContent.AppendLine(string.Join(",", fields));
+                        }
+
+                        File.WriteAllText(filePath, csvContent.ToString());
+                    }
+                }
+                conn.Close();
+            }
+        }
+
         private void completeBtn_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(receivedTextBox.Text) || !decimal.TryParse(receivedTextBox.Text, out receivedValue))
             {
-                MessageBox.Show("Enter a valid decimal for received amount.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Enter a valid decimal for the received amount.", "InvenTrack", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
             decimal totalAmount = CalculateTotal();
             decimal change = receivedValue - totalAmount;
 
-            using (SqlCommand cmd = new SqlCommand("DELETE FROM Orders", conn))
+            string currentDirectory = Environment.CurrentDirectory;
+
+            string savedFolderPath = System.IO.Path.Combine(currentDirectory, "Saved");
+            Directory.CreateDirectory(savedFolderPath);
+            string fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + ".csv";
+            string exportFilePath = System.IO.Path.Combine(savedFolderPath, fileName);
+            ExportOrdersToCSV(exportFilePath);
+
+            MessageBox.Show("This order has been saved");
+            using (SqlConnection conn = new SqlConnection(@"Data Source=DESKTOP-QP317C6;Initial Catalog=JaensGadgetGarage;Integrated Security=True"))
             {
                 conn.Open();
-                cmd.ExecuteNonQuery();
+                using (SqlCommand cmd = new SqlCommand("DELETE FROM Orders", conn))
+                {
+                    cmd.ExecuteNonQuery();
+                }
                 conn.Close();
             }
+
+            cmd = new SqlCommand("INSERT INTO Audit (auditDate, message) VALUES(@auditDate, @message)", conn);
+            cmd.Parameters.AddWithValue("@auditDate", DateTime.Now);
+            cmd.Parameters.AddWithValue("@message", "An order has been completed.");
+            conn.Open();
+            cmd.ExecuteNonQuery();
+            conn.Close();
 
             changeTxt.Text = change.ToString("0.00");
 
